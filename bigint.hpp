@@ -134,7 +134,7 @@ public:
         return bigint(!is_negative, vec);
     }
 
-    // Pre-increment and Post-increment of ++ and --
+    // Pre-/Post- increment/decrement of ++ and --
     bigint &operator++()
     {
         *this = *this + 1;
