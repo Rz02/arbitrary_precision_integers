@@ -108,6 +108,40 @@ class bigint
         return bigint(lhs.is_negative != rhs.is_negative, product);
     }
 
+    // /
+    friend bigint operator/(const bigint &lhs, const bigint &rhs)
+    {
+        if (rhs == 0)
+            throw invalid_argument("Division by zero");
+
+        bigint dividend(lhs);
+        bigint divisor(rhs);
+        dividend.is_negative = false;
+        divisor.is_negative = false;
+
+        if (abs_compare(dividend.vec, divisor.vec) < 0)
+            return bigint(0);
+
+        vector<uint8_t> quotient;
+        bigint current(0);
+
+        for (size_t i = dividend.vec.size(); i > 0; --i)
+        {
+            current.vec.insert(current.vec.begin(), dividend.vec[i - 1]);
+            current.trim();
+
+            uint8_t count = 0;
+            while (current >= divisor)
+            {
+                current -= divisor;
+                ++count;
+            }
+            quotient.push_back(count);
+        }
+        reverse(quotient.begin(), quotient.end());
+        return bigint(lhs.is_negative != rhs.is_negative, quotient);
+    }
+
 public:
     // +=, -=, *=
     bigint &operator+=(const bigint &rhs)
@@ -125,6 +159,13 @@ public:
     bigint &operator*=(const bigint &rhs)
     {
         *this = *this * rhs;
+        return *this;
+    }
+
+    // /=
+    bigint &operator/=(const bigint &rhs)
+    {
+        *this = *this / rhs;
         return *this;
     }
 

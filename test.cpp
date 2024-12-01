@@ -274,6 +274,68 @@ void test_increment_decrement_operators()
     }
 }
 
+void test_division()
+{
+    try
+    {
+        cout << "Testing Division: ";
+
+        bigint a(100);
+        bigint b(7);
+        if (!(a / b == 14))
+            throw invalid_argument("Fail: Simple division.");
+
+        bigint c(-100);
+        if (!(c / b == -14))
+            throw invalid_argument("Fail: Division by a negative number.");
+
+        bigint d(100);
+        bigint e(-7);
+        if (!(d / e == -14))
+            throw invalid_argument("Fail: Division with a negative divisor.");
+
+        bigint f(-100);
+        bigint g(-7);
+        if (!(f / g == 14))
+            throw invalid_argument("Fail: Both operands negative.");
+
+        bigint h(12345);
+        if (!(h / 1 == 12345))
+            throw invalid_argument("Fail: Division by 1.");
+        if (!(h / -1 == -12345))
+            throw invalid_argument("Fail: Division by -1.");
+
+        bigint i(100);
+        bigint j(7);
+        i /= j;
+        if (i != 14)
+            throw invalid_argument("Fail: /= operator.");
+
+        bigint l("987654321987654321");
+        bigint m("123456789123456789");
+        if (!(l / m == 8))
+            throw invalid_argument("Fail: Division for large numbers.");
+
+        try
+        {
+            bigint num1(100);
+            bigint zero(0);
+            num1 / zero;
+            throw invalid_argument("Fail: Division by zero did not throw an exception.");
+        }
+        catch (const invalid_argument &e)
+        {
+            cout << "Caught expected exception for division by zero: " << e.what() << '\n';
+        }
+
+        cout << "Pass.\n";
+    }
+    catch (const invalid_argument &e)
+    {
+        cout << e.what() << '\n';
+    }
+}
+
 int main()
 {
     test_default_constructor();
@@ -285,4 +347,5 @@ int main()
     test_compound_assignment_operators();
     test_unary_negation();
     test_increment_decrement_operators();
+    test_division();
 }
