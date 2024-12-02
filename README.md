@@ -34,8 +34,9 @@ Input/Output:
         * `+`: add two `bigint` objects
         * `-`: subtract one `bigint` from another
         * `*`: multiply two `bigint` objects
+        * `/`: divide one `bigint` from another
     - Compound Assignment:
-        * `+=, -=, *=`: Perform arithmetic operations and update the current object.
+        * `+=, -=, *=, /=`: Perform arithmetic operations and update the current object.
     - Unary:
         * `-`: Negates a `bigint` value
         * `++, --`: Increment and decrement operators (both pre- and post- forms)
@@ -48,7 +49,7 @@ Input/Output:
     - Create a `bigint` initialized to `0`
 2. Integer: `bigint(int64_t num)`
     - Initialize a `bigint` from an integer
-3. String: `bigint(const string &str)`
+3. String: `bigint(const std::string &str)`
     - Convert a string representation into a `bigint`
 4. Unary: `-`
     - Negates the `bigint` value
@@ -65,9 +66,9 @@ Input/Output:
 ### Private:
 1. `trim()`:
     - Remove leading zeros from the internal representation.
-2. `add_vec(const vector<uint8_t> &a, const vector<uint8_t> &b)`:
+2. `add_vec(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)`:
     - Add two vectors.
-3. `subtract_vec(const vector<uint8_t> &a, const vectro<uint8_t> &b)`:
+3. `subtract_vec(const std::vector<uint8_t> &a, const std::vectro<uint8_t> &b)`:
     - Subtract one vector from another.
-4. `abs_compare(const vectro<uint8_t> &a, const vector<uint8_t> &b)`:
+4. `abs_compare(const std::vectro<uint8_t> &a, const std::vector<uint8_t> &b)`:
     - Compare two vectors.
