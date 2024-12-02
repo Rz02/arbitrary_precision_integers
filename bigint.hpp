@@ -2,12 +2,11 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
-using namespace std;
 
 class bigint
 {
     // << overloading
-    friend ostream &operator<<(ostream &out, const bigint &num)
+    friend std::ostream &operator<<(std::ostream &out, const bigint &num)
     {
         if (num.is_negative)
             out << '-';
@@ -94,7 +93,7 @@ class bigint
 
     friend bigint operator*(const bigint &lhs, const bigint &rhs)
     {
-        vector<uint8_t> product(lhs.vec.size() + rhs.vec.size(), 0);
+        std::vector<uint8_t> product(lhs.vec.size() + rhs.vec.size(), 0);
         for (size_t i = 0; i < lhs.vec.size(); ++i)
         {
             int carry = 0;
@@ -112,7 +111,7 @@ class bigint
     friend bigint operator/(const bigint &lhs, const bigint &rhs)
     {
         if (rhs == 0)
-            throw invalid_argument("Division by zero");
+            throw std::invalid_argument("Division by zero");
 
         bigint dividend(lhs);
         bigint divisor(rhs);
@@ -122,7 +121,7 @@ class bigint
         if (abs_compare(dividend.vec, divisor.vec) < 0)
             return bigint(0);
 
-        vector<uint8_t> quotient;
+        std::vector<uint8_t> quotient;
         bigint current(0);
 
         for (size_t i = dividend.vec.size(); i > 0; --i)
@@ -239,11 +238,11 @@ public:
     // Constructor with one argument
     // Take a string of digits
     // Convert it to an arbitrary-precision integer
-    bigint(const string &str)
+    bigint(const std::string &str)
     {
         // If str is empty
         if (str.empty())
-            throw invalid_argument("String cannot be empty!");
+            throw std::invalid_argument("String cannot be empty!");
 
         // If str represents negative number
         size_t index = 0;
@@ -261,15 +260,15 @@ public:
         for (size_t i = str.size(); i > index; --i)
         {
             if (!isdigit(str[i - 1]))
-                throw invalid_argument("Invalid character in string!");
+                throw std::invalid_argument("Invalid character in string!");
             vec.push_back(static_cast<uint8_t>(str[i - 1] - '0'));
         }
     }
 
 private:
     bool is_negative = false;
-    vector<uint8_t> vec = vector<uint8_t>();
-    bigint(bool negative, const vector<uint8_t> &vector) : is_negative(negative), vec(vector) { trim(); }
+    std::vector<uint8_t> vec = std::vector<uint8_t>();
+    bigint(bool negative, const std::vector<uint8_t> &vector) : is_negative(negative), vec(vector) { trim(); }
 
     // Trim leading zeros
     void trim()
@@ -281,10 +280,10 @@ private:
     }
 
     // Add two vectors
-    static vector<uint8_t> add_vec(const vector<uint8_t> &a, const vector<uint8_t> &b)
+    static std::vector<uint8_t> add_vec(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
-        vector<uint8_t> result = vector<uint8_t>();
-        size_t max_size = max(a.size(), b.size());
+        std::vector<uint8_t> result = std::vector<uint8_t>();
+        size_t max_size = std::max(a.size(), b.size());
         int carry = 0;
 
         for (size_t i = 0; i < max_size || carry; ++i)
@@ -301,9 +300,9 @@ private:
     }
 
     // Subtract two vectors
-    static vector<uint8_t> subtract_vec(const vector<uint8_t> &a, const vector<uint8_t> &b)
+    static std::vector<uint8_t> subtract_vec(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
-        vector<uint8_t> result = vector<uint8_t>();
+        std::vector<uint8_t> result = std::vector<uint8_t>();
         int borrow = 0;
 
         for (size_t i = 0; i < a.size(); ++i)
@@ -330,7 +329,7 @@ private:
     }
 
     // Compare absolute values of two vectors
-    static int8_t abs_compare(const vector<uint8_t> &a, const vector<uint8_t> &b)
+    static int8_t abs_compare(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
         if (a.size() != b.size())
             return a.size() > b.size() ? 1 : -1;
