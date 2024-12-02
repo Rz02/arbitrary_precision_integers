@@ -172,9 +172,11 @@ void test_arithmetic_operators()
         bigint result_add = num1 + num2;
         bigint result_sub = num1 - num2;
         bigint result_mul = num1 * num2;
+        bigint result_div = num2 / num1;
+        bigint result_mod = num2 % num1;
 
         std::cout << "Testing arithmetic operators: ";
-        if (result_add == 579 && result_sub == -333 && result_mul == 56088)
+        if (result_add == 579 && result_sub == -333 && result_mul == 56088 && result_div == 3 && result_mod == 87)
             std::cout << "Pass.\n";
         else
             throw std::invalid_argument("Fail.");
@@ -194,9 +196,12 @@ void test_compound_assignment_operators()
         num1 += num2;
         num2 -= num1;
         num1 *= bigint(2);
+        num2 /= bigint(2);
+        num2 %= bigint(60);
 
-        std::cout << "Testing compound assignment operators: ";
-        if (num1 == 1158 && num2 == -123)
+        std::cout
+            << "Testing compound assignment operators: ";
+        if (num1 == 1158 && num2 == -1)
             std::cout << "Pass.\n";
         else
             throw std::invalid_argument("Fail.");
@@ -277,7 +282,7 @@ void test_division()
 {
     try
     {
-        std::cout << "Testing Division: ";
+        std::cout << "Testing Division: \n";
 
         bigint a(100);
         bigint b(7);
@@ -335,6 +340,64 @@ void test_division()
     }
 }
 
+void test_modulus()
+{
+    try
+    {
+        std::cout << "Testing Modulus: \n";
+
+        // Test case 1: Simple modulus
+        bigint a(100);
+        bigint b(7);
+        if (!(a % b == 2))
+            throw std::invalid_argument("Fail: Simple modulus.");
+
+        // Test case 2: Modulus with a negative divisor
+        bigint c(100);
+        bigint d(-7);
+        if (!(c % d == 2))
+            throw std::invalid_argument("Fail: Modulus with a negative divisor.");
+
+        // Test case 3: Both operands negative
+        bigint e(-100);
+        bigint f(-7);
+        if (!(e % f == -2))
+            throw std::invalid_argument("Fail: Both operands negative.");
+
+        // Test case 4: Large number modulus
+        bigint g("987654321987654321");
+        bigint h("123456789123456789");
+        if (!(g % h == bigint("9000000009")))
+            throw std::invalid_argument("Fail: Large number modulus.");
+
+        // Test case 5: Assignment modulus operator
+        bigint i(100);
+        bigint j(7);
+        i %= j;
+        if (i != 2)
+            throw std::invalid_argument("Fail: %= operator.");
+
+        // Test case 6: Modulus by zero
+        try
+        {
+            bigint num1(100);
+            bigint zero(0);
+            num1 % zero;
+            throw std::invalid_argument("Fail: Modulus by zero did not throw an exception.");
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cout << "Caught expected exception for modulus by zero: " << e.what() << '\n';
+        }
+
+        std::cout << "Pass.\n";
+    }
+    catch (const std::invalid_argument &e)
+    {
+        std::cout << e.what() << '\n';
+    }
+}
+
 int main()
 {
     test_default_constructor();
@@ -347,4 +410,5 @@ int main()
     test_unary_negation();
     test_increment_decrement_operators();
     test_division();
+    test_modulus();
 }

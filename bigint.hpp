@@ -141,6 +141,39 @@ class bigint
         return bigint(lhs.is_negative != rhs.is_negative, quotient);
     }
 
+    // %
+    friend bigint operator%(const bigint &lhs, const bigint &rhs)
+    {
+        if (rhs == 0)
+            throw std::invalid_argument("Modulus by zero");
+
+        bigint dividend(lhs);
+        bigint divisor(rhs);
+
+        bool result_negative = lhs.is_negative;
+        dividend.is_negative = false;
+        divisor.is_negative = false;
+
+        if (dividend < divisor)
+            return lhs;
+
+        bigint current(0);
+        for (size_t i = dividend.vec.size(); i > 0; --i)
+        {
+            current.vec.insert(current.vec.begin(), dividend.vec[i - 1]);
+            current.trim();
+
+            while (current >= divisor)
+                current -= divisor;
+        }
+
+        current.is_negative = result_negative;
+        if (current == 0)
+            current.is_negative = false;
+
+        return current;
+    }
+
 public:
     // +=, -=, *=
     bigint &operator+=(const bigint &rhs)
@@ -165,6 +198,13 @@ public:
     bigint &operator/=(const bigint &rhs)
     {
         *this = *this / rhs;
+        return *this;
+    }
+
+    // %=
+    bigint &operator%=(const bigint &rhs)
+    {
+        *this = *this % rhs;
         return *this;
     }
 

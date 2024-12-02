@@ -35,8 +35,9 @@ Input/Output:
         * `-`: subtract one `bigint` from another
         * `*`: multiply two `bigint` objects
         * `/`: divide one `bigint` from another
+        * `%`: return the remainder of one `bigint` devided by another
     - Compound Assignment:
-        * `+=, -=, *=, /=`: Perform arithmetic operations and update the current object.
+        * `+=, -=, *=, /=, %=`: Perform arithmetic operations and update the current object.
     - Unary:
         * `-`: Negates a `bigint` value
         * `++, --`: Increment and decrement operators (both pre- and post- forms)
