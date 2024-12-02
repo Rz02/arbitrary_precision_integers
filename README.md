@@ -11,7 +11,7 @@ Signed Arithmetic:
 - Handles both positive and negative integers.
 
 Basic Operations: 
-- Supports addition, subtraction, multiplication, and negation.
+- Supports addition, subtraction, multiplication, division, and negation.
 - Supports increment and decrement operators in both pre- and post- forms.
 
 Comparison: 
