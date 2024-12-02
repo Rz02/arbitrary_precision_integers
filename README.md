@@ -63,6 +63,8 @@ Input/Output:
     - `bigint &operator+=(const bigint &rhs)`
     - `bigint &operator-=(const bigint &rhs)`
     - `bigint &operator*=(const bigint &rhs)`
+    - `bigint &operator/=(const bigint &rhs)`
+    - `bigint &operator%=(const bigint &rhs)`
 
 ### Private:
 1. `trim()`:
