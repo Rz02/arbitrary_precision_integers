@@ -299,10 +299,13 @@ public:
         // If str contains invalid character
         for (size_t i = str.size(); i > index; --i)
         {
-            if (!isdigit(str[i - 1]))
+            if (!std::isdigit(str[i - 1]))
                 throw std::invalid_argument("Invalid character in string!");
             vec.push_back(static_cast<uint8_t>(str[i - 1] - '0'));
         }
+
+        // Trim leading zero and avoid Negative zero
+        trim();
     }
 
 private:

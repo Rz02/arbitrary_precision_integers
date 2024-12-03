@@ -108,7 +108,22 @@ void test_string_constructor()
         bigint num7(input);
         std::cout << "Expected 0: " << num7 << '\n';
         if (num7 != 0)
-            throw std::invalid_argument("Fail.");
+            throw std::invalid_argument("Fail. String zero");
+
+        // Test large number
+        bigint num8("123456789123456789123456789");
+        if (!(num8 == bigint("123456789123456789123456789")))
+            throw std::invalid_argument("Fail. Large number");
+
+        // Test leading zero trimming
+        bigint num9("0000123456789");
+        if (!(num9 == 123456789))
+            throw std::invalid_argument("Fail. Zero trimming");
+
+        // Test Negative zero
+        bigint num0("-0");
+        if (!(num0 == 0))
+            throw std::invalid_argument("Fail. Negative Zero");
 
         std::cout << "Testing string constructor: Pass.\n";
     }
@@ -240,29 +255,29 @@ void test_increment_decrement_operators()
         std::cout << "Initial num: " << num << '\n';
 
         // Test pre-increment
-        bigint preIncrement = num;
+        bigint preInc = num;
         ++num;
         std::cout << "After ++num, num: " << num << '\n';
-        if (num != preIncrement + 1)
+        if (num != preInc + 1)
             throw std::invalid_argument("Pre-increment failed.");
 
         // Test post-increment
-        bigint postIncrement = num++;
-        std::cout << "After num++, num: " << num << ", Post-incremented value: " << postIncrement << '\n';
-        if (num != preIncrement + 2 || postIncrement != preIncrement + 1)
+        bigint postInc = num++;
+        std::cout << "After num++, num: " << num << ", Post-incremented value: " << postInc << '\n';
+        if (num != preInc + 2 || postInc != preInc + 1)
             throw std::invalid_argument("Post-increment failed.");
 
         // Test pre-decrement
-        bigint preDecrement = num;
+        bigint preDec = num;
         --num;
         std::cout << "After --num, num: " << num << '\n';
-        if (num != preDecrement - 1)
+        if (num != preDec - 1)
             throw std::invalid_argument("Pre-decrement failed.");
 
         // Test post-decrement
-        bigint postDecrement = num--;
-        std::cout << "After num--, num: " << num << ", Post-decremented value: " << postDecrement << '\n';
-        if (num != preDecrement - 2 || postDecrement != preDecrement - 1)
+        bigint postDec = num--;
+        std::cout << "After num--, num: " << num << ", Post-decremented value: " << postDec << '\n';
+        if (num != preDec - 2 || postDec != preDec - 1)
             throw std::invalid_argument("Post-decrement failed.");
 
         // Final check for correctness
@@ -286,38 +301,34 @@ void test_division()
 
         bigint a(100);
         bigint b(7);
+        bigint c(-100);
+        bigint d(-7);
+        bigint e(12345);
+        bigint f("987654321987654321");
+        bigint g("123456789123456789");
+
         if (!(a / b == 14))
             throw std::invalid_argument("Fail: Simple division.");
 
-        bigint c(-100);
         if (!(c / b == -14))
             throw std::invalid_argument("Fail: Division by a negative number.");
 
-        bigint d(100);
-        bigint e(-7);
-        if (!(d / e == -14))
+        if (!(a / d == -14))
             throw std::invalid_argument("Fail: Division with a negative divisor.");
 
-        bigint f(-100);
-        bigint g(-7);
-        if (!(f / g == 14))
+        if (!(c / d == 14))
             throw std::invalid_argument("Fail: Both operands negative.");
 
-        bigint h(12345);
-        if (!(h / 1 == 12345))
+        if (!(e / 1 == 12345))
             throw std::invalid_argument("Fail: Division by 1.");
-        if (!(h / -1 == -12345))
+        if (!(e / -1 == -12345))
             throw std::invalid_argument("Fail: Division by -1.");
 
-        bigint i(100);
-        bigint j(7);
-        i /= j;
-        if (i != 14)
+        a /= b;
+        if (a != 14)
             throw std::invalid_argument("Fail: /= operator.");
 
-        bigint l("987654321987654321");
-        bigint m("123456789123456789");
-        if (!(l / m == 8))
+        if (!(f / g == 8))
             throw std::invalid_argument("Fail: Division for large numbers.");
 
         try
@@ -346,38 +357,29 @@ void test_modulus()
     {
         std::cout << "Testing Modulus: \n";
 
-        // Test case 1: Simple modulus
         bigint a(100);
         bigint b(7);
+        bigint c(-7);
+        bigint d(-100);
+        bigint e("987654321987654321");
+        bigint f("123456789123456789");
+
         if (!(a % b == 2))
             throw std::invalid_argument("Fail: Simple modulus.");
 
-        // Test case 2: Modulus with a negative divisor
-        bigint c(100);
-        bigint d(-7);
-        if (!(c % d == 2))
+        if (!(a % c == 2))
             throw std::invalid_argument("Fail: Modulus with a negative divisor.");
 
-        // Test case 3: Both operands negative
-        bigint e(-100);
-        bigint f(-7);
-        if (!(e % f == -2))
+        if (!(d % c == -2))
             throw std::invalid_argument("Fail: Both operands negative.");
 
-        // Test case 4: Large number modulus
-        bigint g("987654321987654321");
-        bigint h("123456789123456789");
-        if (!(g % h == bigint("9000000009")))
+        if (!(e % f == bigint("9000000009")))
             throw std::invalid_argument("Fail: Large number modulus.");
 
-        // Test case 5: Assignment modulus operator
-        bigint i(100);
-        bigint j(7);
-        i %= j;
-        if (i != 2)
+        a %= b;
+        if (a != 2)
             throw std::invalid_argument("Fail: %= operator.");
 
-        // Test case 6: Modulus by zero
         try
         {
             bigint num1(100);
