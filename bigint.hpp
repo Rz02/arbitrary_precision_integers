@@ -137,7 +137,7 @@ class bigint
             }
             quotient.push_back(count);
         }
-        reverse(quotient.begin(), quotient.end());
+        std::reverse(quotient.begin(), quotient.end());
         return bigint(lhs.is_negative != rhs.is_negative, quotient);
     }
 
@@ -150,7 +150,6 @@ class bigint
         bigint dividend(lhs);
         bigint divisor(rhs);
 
-        bool result_negative = lhs.is_negative;
         dividend.is_negative = false;
         divisor.is_negative = false;
 
@@ -167,7 +166,7 @@ class bigint
                 current -= divisor;
         }
 
-        current.is_negative = result_negative;
+        current.is_negative = lhs.is_negative;
         if (current == 0)
             current.is_negative = false;
 
