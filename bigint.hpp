@@ -386,23 +386,19 @@ public:
         return temp;
     }
 
-    // Constructor without arguments
-    // Create the integer 0
-
     /**
-     * @brief Construct a new bigint object
+     * @brief Construct a new bigint object with an initial value of 0.
      *
      */
     bigint() : vec({0}) {}
 
-    // Constructor with one argument
-    // Take a int64_t
-    // Convert it to an arbitrary-precision integer
-
     /**
-     * @brief Construct a new bigint object
+     * @brief Construct a new bigint object from a signed 64-bit integer.
      *
-     * @param num
+     * Initializes the bigint object to represent the provided integer,
+     * supporting both positive and negative values.
+     *
+     * @param num The signed 64-bit integer to initialize the bigint object with.
      */
     bigint(int64_t num)
     {
@@ -431,14 +427,14 @@ public:
         }
     }
 
-    // Constructor with one argument
-    // Take a string of digits
-    // Convert it to an arbitrary-precision integer
-
     /**
-     * @brief Construct a new bigint object
+     * @brief Construct a new bigint object from a string representation.
      *
-     * @param str
+     * Initializes the bigint object to represent the number provided as a string.
+     * Supports both positive and negative numbers.
+     *
+     * @param str The string representing the number. It can optionally start with
+     * a '-' for negative numbers. The rest of the string must only contain digits.
      */
     bigint(const std::string &str)
     {
@@ -472,29 +468,39 @@ public:
 
 private:
     /**
-     * @brief
+     * @brief Indicates whether the bigint object represents a negative number.
+     *
+     * Default is false, meaning the number is positive.
      *
      */
     bool is_negative = false;
 
     /**
-     * @brief
+     * @brief Stores the digits of the bigint object in reverse order.
+     *
+     * Each element represents a single digit (0–9) of the number, with the
+     * least significant digit at index 0. Default is an empty vector.
      *
      */
     std::vector<uint8_t> vec = std::vector<uint8_t>();
 
     /**
-     * @brief Construct a new bigint object
+     * @brief Construct a new bigint object from a sign indicator and a vector of digits.
      *
-     * @param negative
-     * @param vector
+     * This constructor initializes the bigint object directly with the provided sign
+     * and digit vector.
+     *
+     * @param negative Indicates if the number is negative (true for negative).
+     * @param vector The vector containing the digits of the number in reverse order.
      */
     bigint(bool negative, const std::vector<uint8_t> &vector) : is_negative(negative), vec(vector) { trim(); }
 
-    // Trim leading zeros
-
     /**
-     * @brief
+     * @brief Removes leading zeros from the bigint representation.
+     *
+     * This method ensures the internal vector `vec` does not contain unnecessary
+     * leading zeros. If the number becomes zero, it also resets the sign
+     * (`is_negative`) to false.
      *
      */
     void trim()
@@ -505,14 +511,15 @@ private:
             is_negative = false;
     }
 
-    // Add two vectors
-
     /**
-     * @brief
+     * @brief Adds two vectors representing reversed-digit numbers.
      *
-     * @param a
-     * @param b
-     * @return std::vector<uint8_t>
+     * Performs addition of two numbers stored as vectors of digits in reverse order,
+     * handling carry propagation.
+     *
+     * @param a The first number as a vector of digits in reverse order.
+     * @param b The second number as a vector of digits in reverse order.
+     * @return std::vector<uint8_t> The result of the addition as a vector of digits in reverse order.
      */
     static std::vector<uint8_t> add_vec(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
@@ -533,14 +540,15 @@ private:
         return result;
     }
 
-    // Subtract two vectors
-
     /**
-     * @brief
+     * @brief Subtracts one vector from another, representing reversed-digit numbers.
      *
-     * @param a
-     * @param b
-     * @return std::vector<uint8_t>
+     * Performs subtraction of `b` from `a`, assuming `a` represents a number greater
+     * than or equal to `b`. Both inputs are stored as vectors of digits in reverse order.
+     *
+     * @param a The minuend as a vector of digits in reverse order.
+     * @param b The subtrahend as a vector of digits in reverse order.
+     * @return std::vector<uint8_t> The result of the subtraction as a vector of digits in reverse order.
      */
     static std::vector<uint8_t> subtract_vec(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
@@ -570,14 +578,16 @@ private:
         return result;
     }
 
-    // Compare absolute values of two vectors
-
     /**
-     * @brief
+     * @brief Compares the absolute values of two numbers represented as digit vectors.
      *
-     * @param a
-     * @param b
-     * @return int8_t
+     * Determines whether the absolute value of `a` is greater than, less than, or
+     * equal to the absolute value of `b`. Both inputs are stored as vectors of digits
+     * in reverse order.
+     *
+     * @param a The first number as a vector of digits in reverse order.
+     * @param b The second number as a vector of digits in reverse order.
+     * @return int8_t Returns 1 if |a| > |b|, -1 if |a| < |b|, and 0 if |a| == |b|.
      */
     static int8_t abs_compare(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
