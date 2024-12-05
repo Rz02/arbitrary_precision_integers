@@ -29,6 +29,7 @@ Input/Output:
     1. **Default**: Create a `bigint` with a value of `0`: `bigint num;`
     2. **Integer**: Initialize a `bigint` from a 64-bit integer: `bigint num(123456789);`
     3. **String**: Initialize a `bigint` from a string of digits. Supports both positive and negative numbers: `bigint num("-123456789");`
+    4. **String & Base**: Initialize a `bigint` from a string and a base by converting the string to an arbitrary-precision integer in that base: `bigint num("FF", 16);`
 - Operators:
     - Arithmetic:
         * `+`: add two `bigint` objects
