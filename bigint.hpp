@@ -3,9 +3,21 @@
 #include <string>
 #include <stdexcept>
 
+/**
+ * @brief
+ *
+ */
 class bigint
 {
     // << overloading
+
+    /**
+     * @brief
+     *
+     * @param out
+     * @param num
+     * @return std::ostream&
+     */
     friend std::ostream &operator<<(std::ostream &out, const bigint &num)
     {
         if (num.is_negative)
@@ -18,17 +30,43 @@ class bigint
     // Comparison overloading
 
     // == & !=
+
+    /**
+     * @brief
+     *
+     * @param lhs
+     * @param rhs
+     * @return true
+     * @return false
+     */
     friend bool operator==(const bigint &lhs, const bigint &rhs)
     {
         return (lhs.is_negative == rhs.is_negative) && (lhs.vec == rhs.vec);
     }
 
+    /**
+     * @brief
+     *
+     * @param lhs
+     * @param rhs
+     * @return true
+     * @return false
+     */
     friend bool operator!=(const bigint &lhs, const bigint &rhs)
     {
         return !(lhs == rhs);
     }
 
     // <, <= & >, >=
+
+    /**
+     * @brief
+     *
+     * @param lhs
+     * @param rhs
+     * @return true
+     * @return false
+     */
     friend bool operator<(const bigint &lhs, const bigint &rhs)
     {
         if (lhs.is_negative != rhs.is_negative)
@@ -43,22 +81,54 @@ class bigint
         return false;
     }
 
+    /**
+     * @brief
+     *
+     * @param lhs
+     * @param rhs
+     * @return true
+     * @return false
+     */
     friend bool operator<=(const bigint &lhs, const bigint &rhs)
     {
         return (lhs < rhs) || (lhs == rhs);
     }
 
+    /**
+     * @brief
+     *
+     * @param lhs
+     * @param rhs
+     * @return true
+     * @return false
+     */
     friend bool operator>(const bigint &lhs, const bigint &rhs)
     {
         return !(lhs <= rhs);
     }
 
+    /**
+     * @brief
+     *
+     * @param lhs
+     * @param rhs
+     * @return true
+     * @return false
+     */
     friend bool operator>=(const bigint &lhs, const bigint &rhs)
     {
         return !(lhs < rhs);
     }
 
     // +, -, *
+
+    /**
+     * @brief
+     *
+     * @param lhs
+     * @param rhs
+     * @return bigint
+     */
     friend bigint operator+(const bigint &lhs, const bigint &rhs)
     {
         if (lhs.is_negative == rhs.is_negative)
@@ -75,6 +145,13 @@ class bigint
         }
     }
 
+    /**
+     * @brief
+     *
+     * @param lhs
+     * @param rhs
+     * @return bigint
+     */
     friend bigint operator-(const bigint &lhs, const bigint &rhs)
     {
         if (lhs.is_negative != rhs.is_negative)
@@ -91,6 +168,13 @@ class bigint
         }
     }
 
+    /**
+     * @brief
+     *
+     * @param lhs
+     * @param rhs
+     * @return bigint
+     */
     friend bigint operator*(const bigint &lhs, const bigint &rhs)
     {
         std::vector<uint8_t> product(lhs.vec.size() + rhs.vec.size(), 0);
@@ -108,6 +192,14 @@ class bigint
     }
 
     // /
+
+    /**
+     * @brief
+     *
+     * @param lhs
+     * @param rhs
+     * @return bigint
+     */
     friend bigint operator/(const bigint &lhs, const bigint &rhs)
     {
         if (rhs == 0)
@@ -142,6 +234,14 @@ class bigint
     }
 
     // %
+
+    /**
+     * @brief
+     *
+     * @param lhs
+     * @param rhs
+     * @return bigint
+     */
     friend bigint operator%(const bigint &lhs, const bigint &rhs)
     {
         if (rhs == 0)
@@ -175,18 +275,37 @@ class bigint
 
 public:
     // +=, -=, *=
+
+    /**
+     * @brief
+     *
+     * @param rhs
+     * @return bigint&
+     */
     bigint &operator+=(const bigint &rhs)
     {
         *this = *this + rhs;
         return *this;
     }
 
+    /**
+     * @brief
+     *
+     * @param rhs
+     * @return bigint&
+     */
     bigint &operator-=(const bigint &rhs)
     {
         *this = *this - rhs;
         return *this;
     }
 
+    /**
+     * @brief
+     *
+     * @param rhs
+     * @return bigint&
+     */
     bigint &operator*=(const bigint &rhs)
     {
         *this = *this * rhs;
@@ -194,6 +313,13 @@ public:
     }
 
     // /=
+
+    /**
+     * @brief
+     *
+     * @param rhs
+     * @return bigint&
+     */
     bigint &operator/=(const bigint &rhs)
     {
         *this = *this / rhs;
@@ -201,6 +327,13 @@ public:
     }
 
     // %=
+
+    /**
+     * @brief
+     *
+     * @param rhs
+     * @return bigint&
+     */
     bigint &operator%=(const bigint &rhs)
     {
         *this = *this % rhs;
@@ -208,18 +341,35 @@ public:
     }
 
     // Unary -
+
+    /**
+     * @brief
+     *
+     * @return bigint
+     */
     bigint operator-() const
     {
         return bigint(!is_negative, vec);
     }
 
     // Pre-/Post- increment/decrement of ++ and --
+
+    /**
+     * @brief
+     *
+     * @return bigint&
+     */
     bigint &operator++()
     {
         *this = *this + 1;
         return *this;
     }
 
+    /**
+     * @brief
+     *
+     * @return bigint
+     */
     bigint operator++(int)
     {
         bigint temp = *this;
@@ -227,12 +377,22 @@ public:
         return temp;
     }
 
+    /**
+     * @brief
+     *
+     * @return bigint&
+     */
     bigint &operator--()
     {
         *this = *this - 1;
         return *this;
     }
 
+    /**
+     * @brief
+     *
+     * @return bigint
+     */
     bigint operator--(int)
     {
         bigint temp = *this;
@@ -242,11 +402,22 @@ public:
 
     // Constructor without arguments
     // Create the integer 0
+
+    /**
+     * @brief Construct a new bigint object
+     *
+     */
     bigint() : vec({0}) {}
 
     // Constructor with one argument
     // Take a int64_t
     // Convert it to an arbitrary-precision integer
+
+    /**
+     * @brief Construct a new bigint object
+     *
+     * @param num
+     */
     bigint(int64_t num)
     {
         // If num is negative
@@ -277,6 +448,12 @@ public:
     // Constructor with one argument
     // Take a string of digits
     // Convert it to an arbitrary-precision integer
+
+    /**
+     * @brief Construct a new bigint object
+     *
+     * @param str
+     */
     bigint(const std::string &str)
     {
         // If str is empty
@@ -308,11 +485,32 @@ public:
     }
 
 private:
+    /**
+     * @brief
+     *
+     */
     bool is_negative = false;
+
+    /**
+     * @brief
+     *
+     */
     std::vector<uint8_t> vec = std::vector<uint8_t>();
+
+    /**
+     * @brief Construct a new bigint object
+     *
+     * @param negative
+     * @param vector
+     */
     bigint(bool negative, const std::vector<uint8_t> &vector) : is_negative(negative), vec(vector) { trim(); }
 
     // Trim leading zeros
+
+    /**
+     * @brief
+     *
+     */
     void trim()
     {
         while (vec.size() > 1 && vec.back() == 0)
@@ -322,6 +520,14 @@ private:
     }
 
     // Add two vectors
+
+    /**
+     * @brief
+     *
+     * @param a
+     * @param b
+     * @return std::vector<uint8_t>
+     */
     static std::vector<uint8_t> add_vec(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
         std::vector<uint8_t> result = std::vector<uint8_t>();
@@ -342,6 +548,14 @@ private:
     }
 
     // Subtract two vectors
+
+    /**
+     * @brief
+     *
+     * @param a
+     * @param b
+     * @return std::vector<uint8_t>
+     */
     static std::vector<uint8_t> subtract_vec(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
         std::vector<uint8_t> result = std::vector<uint8_t>();
@@ -371,6 +585,14 @@ private:
     }
 
     // Compare absolute values of two vectors
+
+    /**
+     * @brief
+     *
+     * @param a
+     * @param b
+     * @return int8_t
+     */
     static int8_t abs_compare(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)
     {
         if (a.size() != b.size())

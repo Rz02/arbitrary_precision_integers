@@ -3,6 +3,10 @@
 #include <stdexcept>
 #include <vector>
 
+/**
+ * @brief
+ *
+ */
 void test_default_constructor()
 {
     try
@@ -20,6 +24,10 @@ void test_default_constructor()
     }
 }
 
+/**
+ * @brief
+ *
+ */
 void test_int_constructor()
 {
     try
@@ -39,6 +47,10 @@ void test_int_constructor()
     }
 }
 
+/**
+ * @brief
+ *
+ */
 void test_string_constructor()
 {
     try
@@ -133,6 +145,10 @@ void test_string_constructor()
     }
 }
 
+/**
+ * @brief
+ *
+ */
 void test_stream_insertion()
 {
     try
@@ -157,6 +173,11 @@ void test_stream_insertion()
     }
 }
 
+/**
+ * @brief
+ *
+ * @return s
+ */
 void test_comparison_operators()
 {
     try
@@ -178,6 +199,11 @@ void test_comparison_operators()
     }
 }
 
+/**
+ * @brief
+ *
+ * @return s
+ */
 void test_arithmetic_operators()
 {
     try
@@ -202,6 +228,11 @@ void test_arithmetic_operators()
     }
 }
 
+/**
+ * @brief
+ *
+ * @return s
+ */
 void test_compound_assignment_operators()
 {
     try
@@ -227,6 +258,10 @@ void test_compound_assignment_operators()
     }
 }
 
+/**
+ * @brief
+ *
+ */
 void test_unary_negation()
 {
     try
@@ -247,6 +282,11 @@ void test_unary_negation()
     }
 }
 
+/**
+ * @brief
+ *
+ * @return s
+ */
 void test_increment_decrement_operators()
 {
     try
@@ -293,6 +333,10 @@ void test_increment_decrement_operators()
     }
 }
 
+/**
+ * @brief
+ *
+ */
 void test_division()
 {
     try
@@ -351,6 +395,10 @@ void test_division()
     }
 }
 
+/**
+ * @brief
+ *
+ */
 void test_modulus()
 {
     try
@@ -400,6 +448,11 @@ void test_modulus()
     }
 }
 
+/**
+ * @brief
+ *
+ * @return int
+ */
 int main()
 {
     test_default_constructor();
