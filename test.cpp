@@ -1,9 +1,9 @@
 /**
  * @file test.cpp
- * @author your name (you@domain.com)
+ * @author Zicheng Zhao (zhaoz149@mcmaster.com)
  * @brief
  * @version 0.1
- * @date 2024-12-04
+ * @date 2024-12-05
  *
  * @copyright Copyright (c) 2024
  *
@@ -14,7 +14,11 @@
 #include <vector>
 
 /**
- * @brief
+ * @brief Tests the default constructor of the `bigint` class.
+ *
+ * This test checks if the default constructor initializes the `bigint` object
+ * correctly to represent the value zero. It also verifies exception handling for
+ * any unexpected behavior.
  *
  */
 void test_default_constructor()
@@ -35,7 +39,11 @@ void test_default_constructor()
 }
 
 /**
- * @brief
+ * @brief Tests the integer constructor of the `bigint` class.
+ *
+ * This test checks if the constructor correctly initializes `bigint` objects
+ * with positive, negative, and zero values when provided with integer inputs.
+ * It also validates exception handling for unexpected behaviors.
  *
  */
 void test_int_constructor()
@@ -58,7 +66,17 @@ void test_int_constructor()
 }
 
 /**
- * @brief
+ * @brief Tests the string constructor of the `bigint` class.
+ *
+ * This test checks various cases for constructing a `bigint` object from strings:
+ *
+ * - Valid positive and negative number strings.
+ * - Edge cases such as zero, leading zeros, and "negative zero."
+ * - Handling invalid input like empty strings, non-digit characters, spaces,
+ *   and special characters.
+ * - Very large numbers to test the robustness of the constructor.
+ *
+ * It also verifies correct exception handling for invalid inputs.
  *
  */
 void test_string_constructor()
@@ -156,7 +174,11 @@ void test_string_constructor()
 }
 
 /**
- * @brief
+ * @brief Tests the stream insertion operator (<<) for the `bigint` class.
+ *
+ * This test verifies that the `bigint` objects are correctly formatted and
+ * displayed as strings when inserted into an output stream. Both positive
+ * and negative numbers are tested to ensure proper formatting.
  *
  */
 void test_stream_insertion()
@@ -184,9 +206,12 @@ void test_stream_insertion()
 }
 
 /**
- * @brief
+ * @brief Tests the comparison operators for the `bigint` class.
  *
- * @return s
+ * This test validates the correctness of all comparison operators (`==`, `!=`,
+ * `<`, `<=`, `>`, `>=`) for `bigint`. Positive, negative, and equivalent
+ * values are compared to ensure consistent and accurate behavior.
+ *
  */
 void test_comparison_operators()
 {
@@ -210,9 +235,12 @@ void test_comparison_operators()
 }
 
 /**
- * @brief
+ * @brief Tests the arithmetic operators for the `bigint` class.
  *
- * @return s
+ * This test ensures that addition, subtraction, multiplication, division,
+ * and modulo operations work correctly for `bigint` objects. The results are
+ * compared with expected values for a variety of inputs.
+ *
  */
 void test_arithmetic_operators()
 {
@@ -239,9 +267,12 @@ void test_arithmetic_operators()
 }
 
 /**
- * @brief
+ * @brief Tests compound assignment operators for the `bigint` class.
  *
- * @return s
+ * This test validates the correctness of the compound assignment operators
+ * (`+=`, `-=`, `*=`, `/=`, `%=`) when used with `bigint` objects. The
+ * operators are tested with various inputs to ensure expected results.
+ *
  */
 void test_compound_assignment_operators()
 {
@@ -269,7 +300,11 @@ void test_compound_assignment_operators()
 }
 
 /**
- * @brief
+ * @brief Tests the unary negation operator (-) for the `bigint` class.
+ *
+ * This test verifies that negating a positive `bigint` correctly converts
+ * it to a negative value and vice versa. It also ensures that negating
+ * zero has no effect.
  *
  */
 void test_unary_negation()
@@ -293,9 +328,13 @@ void test_unary_negation()
 }
 
 /**
- * @brief
+ * @brief Tests the increment and decrement operators for the `bigint` class.
  *
- * @return s
+ * This test verifies the correct operation of pre-increment (`++num`), post-increment (`num++`),
+ * pre-decrement (`--num`), and post-decrement (`num--`) operators for the `bigint` class.
+ * The expected behavior is that the values increase or decrease as expected with both
+ * pre- and post-increment/decrement variants.
+ *
  */
 void test_increment_decrement_operators()
 {
@@ -344,7 +383,11 @@ void test_increment_decrement_operators()
 }
 
 /**
- * @brief
+ * @brief Tests the division operator for the `bigint` class.
+ *
+ * This test validates the correctness of the division operator (`/`) for various
+ * `bigint` inputs, including positive, negative, and large numbers. It also checks
+ * the division by zero scenario to ensure an exception is thrown.
  *
  */
 void test_division()
@@ -406,7 +449,11 @@ void test_division()
 }
 
 /**
- * @brief
+ * @brief Tests the modulus operator for the `bigint` class.
+ *
+ * This test validates the correctness of the modulus operator (`%`) for various
+ * `bigint` inputs, including positive, negative, and large numbers. It also ensures
+ * that modulus by zero throws the expected exception.
  *
  */
 void test_modulus()
@@ -459,9 +506,12 @@ void test_modulus()
 }
 
 /**
- * @brief
+ * @brief Main function to execute all tests.
  *
- * @return int
+ * This function runs the individual test functions for the `bigint` class to
+ * verify that the class behaves correctly for various operators and constructors.
+ *
+ * @return int Exit status.
  */
 int main()
 {
