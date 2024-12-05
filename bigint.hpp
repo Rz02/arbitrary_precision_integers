@@ -1,22 +1,30 @@
+/**
+ * @file bigint.hpp
+ * @author Zicheng Zhao (zhaoz149@mcmaster.ca)
+ * @brief A file that contains the class bigint
+ * @version 0.1
+ * @date 2024-12-04
+ *
+ * @copyright Copyright (c) 2024
+ *
+ */
 #include <iostream>
 #include <vector>
 #include <string>
 #include <stdexcept>
 
 /**
- * @brief
+ * @brief A class for arbitrary-precision integers
  *
  */
 class bigint
 {
-    // << overloading
-
     /**
-     * @brief
+     * @brief I/O operator for insertion overloading
      *
-     * @param out
-     * @param num
-     * @return std::ostream&
+     * @param out an instance of std::ostream
+     * @param num the bigint object whose value will be output
+     * @return std::ostream& A reference to the same output stream that's passed as an argument
      */
     friend std::ostream &operator<<(std::ostream &out, const bigint &num)
     {
@@ -27,17 +35,13 @@ class bigint
         return out;
     }
 
-    // Comparison overloading
-
-    // == & !=
-
     /**
-     * @brief
+     * @brief comparison operator == overloading
      *
-     * @param lhs
-     * @param rhs
-     * @return true
-     * @return false
+     * @param lhs left hand side
+     * @param rhs right hand side
+     * @return true If meet the criteria
+     * @return false If not meet the criteria
      */
     friend bool operator==(const bigint &lhs, const bigint &rhs)
     {
@@ -45,27 +49,25 @@ class bigint
     }
 
     /**
-     * @brief
+     * @brief comparison operator != overloading
      *
-     * @param lhs
-     * @param rhs
-     * @return true
-     * @return false
+     * @param lhs left hand side
+     * @param rhs right hand side
+     * @return true If meet the criteria
+     * @return false If not meet the criteria
      */
     friend bool operator!=(const bigint &lhs, const bigint &rhs)
     {
         return !(lhs == rhs);
     }
 
-    // <, <= & >, >=
-
     /**
-     * @brief
+     * @brief comparison operator < overloading
      *
-     * @param lhs
-     * @param rhs
-     * @return true
-     * @return false
+     * @param lhs left hand side
+     * @param rhs right hand side
+     * @return true If meet the criteria
+     * @return false If not meet the criteria
      */
     friend bool operator<(const bigint &lhs, const bigint &rhs)
     {
@@ -82,12 +84,12 @@ class bigint
     }
 
     /**
-     * @brief
+     * @brief comparison operator <= overloading
      *
-     * @param lhs
-     * @param rhs
-     * @return true
-     * @return false
+     * @param lhs left hand side
+     * @param rhs right hand side
+     * @return true If meet the criteria
+     * @return false If not meet the criteria
      */
     friend bool operator<=(const bigint &lhs, const bigint &rhs)
     {
@@ -95,12 +97,12 @@ class bigint
     }
 
     /**
-     * @brief
+     * @brief comparison operator > overloading
      *
-     * @param lhs
-     * @param rhs
-     * @return true
-     * @return false
+     * @param lhs left hand side
+     * @param rhs right hand side
+     * @return true If meet the criteria
+     * @return false If not meet the criteria
      */
     friend bool operator>(const bigint &lhs, const bigint &rhs)
     {
@@ -108,26 +110,24 @@ class bigint
     }
 
     /**
-     * @brief
+     * @brief comparison operator >= overloading
      *
-     * @param lhs
-     * @param rhs
-     * @return true
-     * @return false
+     * @param lhs left hand side
+     * @param rhs right hand side
+     * @return true If meet the criteria
+     * @return false If not meet the criteria
      */
     friend bool operator>=(const bigint &lhs, const bigint &rhs)
     {
         return !(lhs < rhs);
     }
 
-    // +, -, *
-
     /**
-     * @brief
+     * @brief arithmetic operator + overloading
      *
-     * @param lhs
-     * @param rhs
-     * @return bigint
+     * @param lhs left hand side
+     * @param rhs right hand side
+     * @return bigint The sum of the two bigint
      */
     friend bigint operator+(const bigint &lhs, const bigint &rhs)
     {
@@ -146,11 +146,11 @@ class bigint
     }
 
     /**
-     * @brief
+     * @brief arithmetic operator - overloading
      *
-     * @param lhs
-     * @param rhs
-     * @return bigint
+     * @param lhs left hand side
+     * @param rhs right hand side
+     * @return bigint The first bigint minus the second bigint
      */
     friend bigint operator-(const bigint &lhs, const bigint &rhs)
     {
@@ -169,11 +169,11 @@ class bigint
     }
 
     /**
-     * @brief
+     * @brief arithmetic operator * overloading
      *
-     * @param lhs
-     * @param rhs
-     * @return bigint
+     * @param lhs left hand side
+     * @param rhs right hand side
+     * @return bigint The multiplication of the two bigint
      */
     friend bigint operator*(const bigint &lhs, const bigint &rhs)
     {
@@ -191,14 +191,12 @@ class bigint
         return bigint(lhs.is_negative != rhs.is_negative, product);
     }
 
-    // /
-
     /**
-     * @brief
+     * @brief arithmetic operator / overloading
      *
-     * @param lhs
-     * @param rhs
-     * @return bigint
+     * @param lhs left hand side
+     * @param rhs right hand side
+     * @return bigint The first bigint divided by the second bigint
      */
     friend bigint operator/(const bigint &lhs, const bigint &rhs)
     {
@@ -233,14 +231,12 @@ class bigint
         return bigint(lhs.is_negative != rhs.is_negative, quotient);
     }
 
-    // %
-
     /**
-     * @brief
+     * @brief arithmetic operator % overloading
      *
-     * @param lhs
-     * @param rhs
-     * @return bigint
+     * @param lhs left hand side
+     * @param rhs right hand side
+     * @return bigint The remainder of the first bigint divided by the second bigint
      */
     friend bigint operator%(const bigint &lhs, const bigint &rhs)
     {
@@ -274,13 +270,11 @@ class bigint
     }
 
 public:
-    // +=, -=, *=
-
     /**
-     * @brief
+     * @brief compound assignment += overloading
      *
-     * @param rhs
-     * @return bigint&
+     * @param rhs right hand side
+     * @return bigint& A reference to the current object after the operation
      */
     bigint &operator+=(const bigint &rhs)
     {
@@ -289,10 +283,10 @@ public:
     }
 
     /**
-     * @brief
+     * @brief compound assignment -= overloading
      *
-     * @param rhs
-     * @return bigint&
+     * @param rhs right hand side
+     * @return bigint& A reference to the current object after the operation
      */
     bigint &operator-=(const bigint &rhs)
     {
@@ -301,10 +295,10 @@ public:
     }
 
     /**
-     * @brief
+     * @brief compound assignment *= overloading
      *
-     * @param rhs
-     * @return bigint&
+     * @param rhs right hand side
+     * @return bigint& A reference to the current object after the operation
      */
     bigint &operator*=(const bigint &rhs)
     {
@@ -312,13 +306,11 @@ public:
         return *this;
     }
 
-    // /=
-
     /**
-     * @brief
+     * @brief compound assignment /= overloading
      *
-     * @param rhs
-     * @return bigint&
+     * @param rhs right hand side
+     * @return bigint& A reference to the current object after the operation
      */
     bigint &operator/=(const bigint &rhs)
     {
@@ -326,13 +318,11 @@ public:
         return *this;
     }
 
-    // %=
-
     /**
-     * @brief
+     * @brief compound assignment %= overloading
      *
-     * @param rhs
-     * @return bigint&
+     * @param rhs right hand side
+     * @return bigint& A reference to the current object after the operation
      */
     bigint &operator%=(const bigint &rhs)
     {
@@ -340,24 +330,20 @@ public:
         return *this;
     }
 
-    // Unary -
-
     /**
-     * @brief
+     * @brief Unary operator - overloading
      *
-     * @return bigint
+     * @return bigint A negated bigint value
      */
     bigint operator-() const
     {
         return bigint(!is_negative, vec);
     }
 
-    // Pre-/Post- increment/decrement of ++ and --
-
     /**
-     * @brief
+     * @brief Pre-increment operator overload
      *
-     * @return bigint&
+     * @return bigint& Reference to the current object after the operation
      */
     bigint &operator++()
     {
@@ -366,9 +352,9 @@ public:
     }
 
     /**
-     * @brief
+     * @brief Post-increment operator overload
      *
-     * @return bigint
+     * @return bigint A copy of the object as it was before the operation
      */
     bigint operator++(int)
     {
@@ -378,9 +364,9 @@ public:
     }
 
     /**
-     * @brief
+     * @brief Pre-decrement operator overload
      *
-     * @return bigint&
+     * @return bigint& Reference to the current object after the operation
      */
     bigint &operator--()
     {
@@ -389,9 +375,9 @@ public:
     }
 
     /**
-     * @brief
+     * @brief Post-decrement operator overload
      *
-     * @return bigint
+     * @return bigint A copy of the object as it was before the operation
      */
     bigint operator--(int)
     {
