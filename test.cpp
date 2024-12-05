@@ -506,6 +506,121 @@ void test_modulus()
 }
 
 /**
+ * @brief Test the constructor of the bigint class that takes a string and a base.
+ *
+ * This function tests various valid and invalid cases for the `bigint` constructor,
+ * which creates a `bigint` object from a string representation in a specified base
+ * (from base 2 to base 36).
+ *
+ */
+void test_string_base_constructor()
+{
+    try
+    {
+        std::cout << "Testing String Base Constructor:\n";
+
+        // Test case 1: Valid hexadecimal input (Base 16)
+        bigint num1("FF", 16);
+        if (num1 != 255)
+        {
+            throw std::invalid_argument("Fail: FF in base 16 should be 255.");
+        }
+
+        // Test case 2: Valid decimal input (Base 10)
+        bigint num2("100", 10);
+        if (num2 != 100)
+        {
+            throw std::invalid_argument("Fail: 100 in base 10 should be 100.");
+        }
+
+        // Test case 3: Valid binary input (Base 2)
+        bigint num3("1101", 2);
+        if (num3 != 13)
+        {
+            throw std::invalid_argument("Fail: 1101 in base 2 should be 13.");
+        }
+
+        // Test case 4: Valid base 36 input (Base 36)
+        bigint num4("Z", 36); // 'Z' in base 36 is 35
+        if (num4 != 35)
+        {
+            throw std::invalid_argument("Fail: Z in base 36 should be 35.");
+        }
+
+        // Test case 5: Valid mixed case base 36 input (Base 36)
+        bigint num5("aB", 36); // 'a' is 10 and 'B' is 11, so "aB" in base 36 is 10 * 36 + 11 = 371
+        if (num5 != 371)
+        {
+            throw std::invalid_argument("Fail: aB in base 36 should be 371.");
+        }
+
+        // Test case 6: Negative number in decimal (Base 10)
+        bigint num6("-100", 10);
+        if (num6 != -100)
+        {
+            throw std::invalid_argument("Fail: -100 in base 10 should be -100.");
+        }
+
+        // Test case 7: Valid large number in base 10
+        bigint num7("123456789123456789", 10);
+        if (num7 != 123456789123456789)
+        {
+            throw std::invalid_argument("Fail: 123456789123456789 in base 10 is incorrect.");
+        }
+
+        // Test case 8: Invalid character in base 16 (Base 16)
+        try
+        {
+            bigint num8("G1", 16); // 'G' is invalid in base 16
+            throw std::invalid_argument("Fail: Invalid character 'G' in base 16 should throw an exception.");
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cout << "Caught expected exception for invalid character in base 16: " << e.what() << '\n';
+        }
+
+        // Test case 9: Invalid character for base 10
+        try
+        {
+            bigint num9("19A", 10); // 'A' is invalid in base 10
+            throw std::invalid_argument("Fail: Invalid character 'A' in base 10 should throw an exception.");
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cout << "Caught expected exception for invalid character in base 10: " << e.what() << '\n';
+        }
+
+        // Test case 10: Base less than 2
+        try
+        {
+            bigint num10("101", 1); // Base 1 is not valid
+            throw std::invalid_argument("Fail: Base 1 is invalid.");
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cout << "Caught expected exception for invalid base 1: " << e.what() << '\n';
+        }
+
+        // Test case 11: Base greater than 36
+        try
+        {
+            bigint num11("ZZ", 37); // Base 37 is invalid
+            throw std::invalid_argument("Fail: Base 37 is invalid.");
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cout << "Caught expected exception for invalid base 37: " << e.what() << '\n';
+        }
+
+        std::cout << "Pass!\n";
+    }
+    catch (const std::invalid_argument &e)
+    {
+        std::cout << "Test failed: " << e.what() << '\n';
+    }
+}
+
+/**
  * @brief Main function to execute all tests.
  *
  * This function runs the individual test functions for the `bigint` class to
@@ -526,4 +641,5 @@ int main()
     test_increment_decrement_operators();
     test_division();
     test_modulus();
+    test_string_base_constructor();
 }
