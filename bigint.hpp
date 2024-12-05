@@ -466,6 +466,86 @@ public:
         trim();
     }
 
+    /**
+     * @brief Construct a new bigint object from a string representation in a given base.
+     *
+     * This constructor takes a string that represents a large integer in a specific base
+     * (from 2 to 36) and converts it into a `bigint` object.
+     * The string may optionally start with a minus sign ('-') to indicate a negative number.
+     * The digits in the string can be any combination of digits (0-9) and letters (A-Z or a-z),
+     * which represent values in the specified base.
+     *
+     * @param str The string representing the number to be converted to a bigint.
+     * @param base The base in which the number is represented (must be between 2 and 36).
+     */
+    bigint(const std::string &str, int base)
+    {
+        if (base < 2 || base > 36)
+        {
+            throw std::invalid_argument("Base must be between 2 and 36.");
+        }
+
+        // Initialize as not negative
+        is_negative = false;
+
+        // Check if the number is negative
+        size_t start = 0;
+        if (str[0] == '-')
+        {
+            is_negative = true;
+            // Skip the negative sign for processing
+            start = 1;
+        }
+
+        // Keep the status of is_negative in Boolean for tracking
+        // Since the for loop later change the is_negative to default again
+        // The bool of is_negative affiliates to bigint.
+        // It isn't correlated with the is_negative temporary result we obtain here.
+        bool negation = static_cast<bool>(is_negative);
+
+        // Initialize the bigint to 0
+        *this = bigint(0);
+
+        // Convert the string to the arbitrary-precision integer
+        for (size_t i = start; i < str.size(); ++i)
+        {
+            char c = str[i];
+            int digit = 0;
+
+            // Determine the digit value based on the character
+            if ('0' <= c && c <= '9')
+            {
+                digit = c - '0';
+            }
+            else if ('A' <= c && c <= 'Z')
+            {
+                digit = c - 'A' + 10;
+            }
+            else if ('a' <= c && c <= 'z')
+            {
+                digit = c - 'a' + 10;
+            }
+            else
+            {
+                throw std::invalid_argument("Invalid character in string for the given base.");
+            }
+
+            if (digit >= base)
+            {
+                throw std::invalid_argument("Invalid character in string for the given base.");
+            }
+
+            *this *= base;
+            *this += digit;
+        }
+
+        // Apply the negation if the number was negative
+        if (negation)
+        {
+            *this = -*this;
+        }
+    }
+
 private:
     /**
      * @brief Indicates whether the bigint object represents a negative number.
