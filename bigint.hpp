@@ -28,10 +28,18 @@ class bigint
      */
     friend std::ostream &operator<<(std::ostream &out, const bigint &num)
     {
+        // If the number is negative, output the minus sign
         if (num.is_negative)
             out << '-';
+
+        // Iterate through the digits stored in the vector in reversed order
+        // from the most significant to the least significant digit
         for (size_t i = num.vec.size(); i > 0; --i)
+
+            // Convert each digit to a character and output it
             out << static_cast<char>('0' + num.vec[i - 1]);
+
+        // Return the stream
         return out;
     }
 
@@ -45,6 +53,7 @@ class bigint
      */
     friend bool operator==(const bigint &lhs, const bigint &rhs)
     {
+        // Compare the sign and the internal vector representation for equality
         return (lhs.is_negative == rhs.is_negative) && (lhs.vec == rhs.vec);
     }
 
@@ -58,6 +67,7 @@ class bigint
      */
     friend bool operator!=(const bigint &lhs, const bigint &rhs)
     {
+        // Return the negation of the equality operator
         return !(lhs == rhs);
     }
 
@@ -71,15 +81,28 @@ class bigint
      */
     friend bool operator<(const bigint &lhs, const bigint &rhs)
     {
+        // If the signs differ, the negative number is always smaller
         if (lhs.is_negative != rhs.is_negative)
             return lhs.is_negative;
+
+        // Compare the size of the numbers (number of digits)
         if (lhs.vec.size() != rhs.vec.size())
+
+            // For negative numbers, a larger size indicates a smaller value
+            // For positive numbers, a smaller size indicates a smaller value
             return lhs.is_negative ? (lhs.vec.size() > rhs.vec.size()) : (lhs.vec.size() < rhs.vec.size());
+
+        // Compare individual digits from the most significant to the least significant
         for (size_t i = lhs.vec.size(); i > 0; --i)
         {
             if (lhs.vec[i - 1] != rhs.vec[i - 1])
+
+                // For negative numbers, a larger digit indicates a smaller value
+                // For positive numbers, a smaller digit indicates a smaller value
                 return lhs.is_negative ? (lhs.vec[i - 1] > rhs.vec[i - 1]) : (lhs.vec[i - 1] < rhs.vec[i - 1]);
         }
+
+        // If all digits are the same, the numbers are equal, so `lhs` isn't less than `rhs`
         return false;
     }
 
@@ -93,6 +116,8 @@ class bigint
      */
     friend bool operator<=(const bigint &lhs, const bigint &rhs)
     {
+        // `lhs` is less than or equal to `rhs`
+        // if it's either strictly less than or equal to `rhs`
         return (lhs < rhs) || (lhs == rhs);
     }
 
@@ -106,6 +131,7 @@ class bigint
      */
     friend bool operator>(const bigint &lhs, const bigint &rhs)
     {
+        // `lhs` is greater than `rhs` if it's not less than or equal to `rhs`
         return !(lhs <= rhs);
     }
 
@@ -119,6 +145,7 @@ class bigint
      */
     friend bool operator>=(const bigint &lhs, const bigint &rhs)
     {
+        // `lhs` is greater than or equal to `rhs` if it's not strictly less than `rhs`
         return !(lhs < rhs);
     }
 
