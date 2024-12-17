@@ -43,194 +43,154 @@ class bigint
         return out;
     }
 
+public:
     /**
-     * @brief comparison operator == overloading
+     * @brief
      *
-     * @param lhs left hand side
-     * @param rhs right hand side
-     * @return true If meet the criteria
-     * @return false If not meet the criteria
+     * @param rhs
+     * @return true
+     * @return false
      */
-    friend bool operator==(const bigint &lhs, const bigint &rhs)
+    bool operator==(const bigint &rhs) const
     {
-        // Compare the sign and the internal vector representation for equality
-        return (lhs.is_negative == rhs.is_negative) && (lhs.vec == rhs.vec);
+        return (is_negative == rhs.is_negative) && (vec == rhs.vec);
     }
 
     /**
-     * @brief comparison operator != overloading
+     * @brief
      *
-     * @param lhs left hand side
-     * @param rhs right hand side
-     * @return true If meet the criteria
-     * @return false If not meet the criteria
+     * @param rhs
+     * @return true
+     * @return false
      */
-    friend bool operator!=(const bigint &lhs, const bigint &rhs)
+    bool operator!=(const bigint &rhs) const
     {
-        // Return the negation of the equality operator
-        return !(lhs == rhs);
+        return !(*this == rhs);
     }
 
     /**
-     * @brief comparison operator < overloading
+     * @brief
      *
-     * @param lhs left hand side
-     * @param rhs right hand side
-     * @return true If meet the criteria
-     * @return false If not meet the criteria
+     * @param rhs
+     * @return true
+     * @return false
      */
-    friend bool operator<(const bigint &lhs, const bigint &rhs)
+    bool operator<(const bigint &rhs) const
     {
-        // If the signs differ, the negative number is always smaller
-        if (lhs.is_negative != rhs.is_negative)
-            return lhs.is_negative;
-
-        // Compare the size of the numbers (number of digits)
-        if (lhs.vec.size() != rhs.vec.size())
-
-            // For negative numbers, a larger size indicates a smaller value
-            // For positive numbers, a smaller size indicates a smaller value
-            return lhs.is_negative ? (lhs.vec.size() > rhs.vec.size()) : (lhs.vec.size() < rhs.vec.size());
-
-        // Compare individual digits from the most significant to the least significant
-        for (size_t i = lhs.vec.size(); i > 0; --i)
+        if (is_negative != rhs.is_negative)
+            return is_negative;
+        if (vec.size() != rhs.vec.size())
+            return is_negative ? (vec.size() > rhs.vec.size()) : (vec.size() < rhs.vec.size());
+        for (size_t i = vec.size(); i > 0; --i)
         {
-            if (lhs.vec[i - 1] != rhs.vec[i - 1])
-
-                // For negative numbers, a larger digit indicates a smaller value
-                // For positive numbers, a smaller digit indicates a smaller value
-                return lhs.is_negative ? (lhs.vec[i - 1] > rhs.vec[i - 1]) : (lhs.vec[i - 1] < rhs.vec[i - 1]);
+            if (vec[i - 1] != rhs.vec[i - 1])
+                return is_negative ? (vec[i - 1] > rhs.vec[i - 1]) : (vec[i - 1] < rhs.vec[i - 1]);
         }
-
-        // If all digits are the same, the numbers are equal, so `lhs` isn't less than `rhs`
         return false;
     }
 
     /**
-     * @brief comparison operator <= overloading
+     * @brief
      *
-     * @param lhs left hand side
-     * @param rhs right hand side
-     * @return true If meet the criteria
-     * @return false If not meet the criteria
+     * @param rhs
+     * @return true
+     * @return false
      */
-    friend bool operator<=(const bigint &lhs, const bigint &rhs)
+    bool operator<=(const bigint &rhs) const
     {
-        // `lhs` is less than or equal to `rhs`
-        // if it's either strictly less than or equal to `rhs`
-        return (lhs < rhs) || (lhs == rhs);
+        return (*this < rhs) || (*this == rhs);
     }
 
     /**
-     * @brief comparison operator > overloading
+     * @brief
      *
-     * @param lhs left hand side
-     * @param rhs right hand side
-     * @return true If meet the criteria
-     * @return false If not meet the criteria
+     * @param rhs
+     * @return true
+     * @return false
      */
-    friend bool operator>(const bigint &lhs, const bigint &rhs)
+    bool operator>(const bigint &rhs) const
     {
-        // `lhs` is greater than `rhs` if it's not less than or equal to `rhs`
-        return !(lhs <= rhs);
+        return !(*this <= rhs);
     }
 
     /**
-     * @brief comparison operator >= overloading
+     * @brief
      *
-     * @param lhs left hand side
-     * @param rhs right hand side
-     * @return true If meet the criteria
-     * @return false If not meet the criteria
+     * @param rhs
+     * @return true
+     * @return false
      */
-    friend bool operator>=(const bigint &lhs, const bigint &rhs)
+    bool operator>=(const bigint &rhs) const
     {
-        // `lhs` is greater than or equal to `rhs` if it's not strictly less than `rhs`
-        return !(lhs < rhs);
+        return !(*this < rhs);
     }
 
     /**
-     * @brief arithmetic operator + overloading
+     * @brief
      *
-     * @param lhs left hand side
-     * @param rhs right hand side
-     * @return bigint The sum of the two bigint
+     * @param rhs
+     * @return bigint
      */
-    friend bigint operator+(const bigint &lhs, const bigint &rhs)
+    bigint operator+(const bigint &rhs) const
     {
-        if (lhs.is_negative == rhs.is_negative)
-        {
-            return bigint(lhs.is_negative, add_vec(lhs.vec, rhs.vec));
-        }
-        else if (abs_compare(lhs.vec, rhs.vec) >= 0)
-        {
-            return bigint(lhs.is_negative, subtract_vec(lhs.vec, rhs.vec));
-        }
+        if (is_negative == rhs.is_negative)
+            return bigint(is_negative, add_vec(vec, rhs.vec));
+        else if (abs_compare(vec, rhs.vec) >= 0)
+            return bigint(is_negative, subtract_vec(vec, rhs.vec));
         else
-        {
-            return bigint(rhs.is_negative, subtract_vec(rhs.vec, lhs.vec));
-        }
+            return bigint(rhs.is_negative, subtract_vec(rhs.vec, vec));
     }
 
     /**
-     * @brief arithmetic operator - overloading
+     * @brief
      *
-     * @param lhs left hand side
-     * @param rhs right hand side
-     * @return bigint The first bigint minus the second bigint
+     * @param rhs
+     * @return bigint
      */
-    friend bigint operator-(const bigint &lhs, const bigint &rhs)
+    bigint operator-(const bigint &rhs) const
     {
-        if (lhs.is_negative != rhs.is_negative)
-        {
-            return bigint(lhs.is_negative, add_vec(lhs.vec, rhs.vec));
-        }
-        else if (abs_compare(lhs.vec, rhs.vec) >= 0)
-        {
-            return bigint(lhs.is_negative, subtract_vec(lhs.vec, rhs.vec));
-        }
+        if (is_negative != rhs.is_negative)
+            return bigint(is_negative, add_vec(vec, rhs.vec));
+        else if (abs_compare(vec, rhs.vec) >= 0)
+            return bigint(is_negative, subtract_vec(vec, rhs.vec));
         else
-        {
-            return bigint(!lhs.is_negative, subtract_vec(rhs.vec, lhs.vec));
-        }
+            return bigint(!is_negative, subtract_vec(rhs.vec, vec));
     }
 
     /**
-     * @brief arithmetic operator * overloading
+     * @brief
      *
-     * @param lhs left hand side
-     * @param rhs right hand side
-     * @return bigint The multiplication of the two bigint
+     * @param rhs
+     * @return bigint
      */
-    friend bigint operator*(const bigint &lhs, const bigint &rhs)
+    bigint operator*(const bigint &rhs) const
     {
-        std::vector<uint8_t> product(lhs.vec.size() + rhs.vec.size(), 0);
-        for (size_t i = 0; i < lhs.vec.size(); ++i)
+        std::vector<uint8_t> product(vec.size() + rhs.vec.size(), 0);
+        for (size_t i = 0; i < vec.size(); ++i)
         {
             int carry = 0;
             for (size_t j = 0; j < rhs.vec.size() || carry; ++j)
             {
-                int64_t current = product[i + j] + lhs.vec[i] * (j < rhs.vec.size() ? rhs.vec[j] : 0) + carry;
+                int64_t current = product[i + j] + vec[i] * (j < rhs.vec.size() ? rhs.vec[j] : 0) + carry;
                 product[i + j] = static_cast<uint8_t>(current % 10);
                 carry = static_cast<uint8_t>(current / 10);
             }
         }
-        return bigint(lhs.is_negative != rhs.is_negative, product);
+        return bigint(is_negative != rhs.is_negative, product);
     }
 
     /**
-     * @brief arithmetic operator / overloading
+     * @brief
      *
-     * @param lhs left hand side
-     * @param rhs right hand side
-     * @return bigint The first bigint divided by the second bigint
+     * @param rhs
+     * @return bigint
      */
-    friend bigint operator/(const bigint &lhs, const bigint &rhs)
+    bigint operator/(const bigint &rhs) const
     {
         if (rhs == 0)
             throw std::invalid_argument("Division by zero");
 
-        bigint dividend(lhs);
+        bigint dividend(*this);
         bigint divisor(rhs);
         dividend.is_negative = false;
         divisor.is_negative = false;
@@ -255,29 +215,28 @@ class bigint
             quotient.push_back(count);
         }
         std::reverse(quotient.begin(), quotient.end());
-        return bigint(lhs.is_negative != rhs.is_negative, quotient);
+        return bigint(is_negative != rhs.is_negative, quotient);
     }
 
     /**
-     * @brief arithmetic operator % overloading
+     * @brief
      *
-     * @param lhs left hand side
-     * @param rhs right hand side
-     * @return bigint The remainder of the first bigint divided by the second bigint
+     * @param rhs
+     * @return bigint
      */
-    friend bigint operator%(const bigint &lhs, const bigint &rhs)
+    bigint operator%(const bigint &rhs) const
     {
         if (rhs == 0)
             throw std::invalid_argument("Modulus by zero");
 
-        bigint dividend(lhs);
+        bigint dividend(*this);
         bigint divisor(rhs);
 
         dividend.is_negative = false;
         divisor.is_negative = false;
 
         if (dividend < divisor)
-            return lhs;
+            return *this;
 
         bigint current(0);
         for (size_t i = dividend.vec.size(); i > 0; --i)
@@ -289,14 +248,13 @@ class bigint
                 current -= divisor;
         }
 
-        current.is_negative = lhs.is_negative;
+        current.is_negative = is_negative;
         if (current == 0)
             current.is_negative = false;
 
         return current;
     }
 
-public:
     /**
      * @brief compound assignment += overloading
      *
