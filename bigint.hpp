@@ -404,6 +404,63 @@ public:
     }
 
     /**
+     * @brief Converts the bigint to its string representation in the specified base.
+     *
+     * This function converts the bigint into a string representation for the given base.
+     * Supported bases are between 2 and 36 (inclusive). The digits are represented as
+     * '0'-'9' for values 0-9 and 'A'-'Z' for values 10-35.
+     *
+     * @param base The base for the string representation (must be between 2 and 36).
+     * @return std::string The string representation of the bigint in the specified base.
+     */
+    std::string to_string(uint64_t base) const
+    {
+        if (base < 2 || base > 36)
+        {
+            throw std::invalid_argument("Base must be between 2 and 36.");
+        }
+
+        if (vec.empty() || (vec.size() == 1 && vec[0] == 0))
+        {
+            // Return "0" if the number is zero
+            return "0";
+        }
+
+        // Create a copy of the current bigint to work on
+        bigint temp = *this;
+        // Ignore sign for digit extraction
+        temp.is_negative = false;
+
+        std::string result;
+
+        // Characters used for digits in bases up to 36
+        const char *digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        // Convert the number to the desired base
+        // Until the number becomes zero
+        while (!(temp.vec.size() == 1 && temp.vec[0] == 0))
+        {
+            bigint remainder(0);
+            temp = temp.divide_by_base(base, remainder);
+
+            // Remainder will always be less than the base
+            int rem_value = remainder.vec[0];
+            result.push_back(digits[rem_value]);
+        }
+
+        // Reverse the result string as digits were obtained in reverse order
+        std::reverse(result.begin(), result.end());
+
+        // Add '-' sign if the original number was negative
+        if (is_negative)
+        {
+            result = "-" + result;
+        }
+
+        return result;
+    }
+
+    /**
      * @brief Construct a new bigint object with an initial value of 0.
      *
      */
@@ -703,5 +760,36 @@ private:
                 return a[i - 1] > b[i - 1] ? 1 : -1;
         }
         return 0;
+    }
+
+    /**
+     * @brief Divides the bigint by a given base and calculates the remainder.
+     *
+     * This function performs division of the current bigint object by the specified base
+     * and returns the resulting quotient as a new bigint. The remainder of the division
+     * is stored in the provided `remainder` parameter as a bigint. This method works
+     * by processing the bigint digit-by-digit, handling carry values to simulate manual division.
+     *
+     * @param base The base to divide the bigint by (must be greater than 1).
+     * @param remainder A reference to a bigint object where the remainder will be stored.
+     * @return bigint The quotient of the division as a bigint.
+     */
+    bigint divide_by_base(uint64_t base, bigint &remainder) const
+    {
+        bigint result;
+        result.vec.resize(vec.size());
+
+        uint64_t carry = 0;
+
+        for (size_t i = vec.size(); i > 0; --i)
+        {
+            carry = carry * 10 + vec[i - 1];
+            result.vec[i - 1] = static_cast<uint8_t>(carry / base);
+            carry %= base;
+        }
+
+        remainder = bigint(static_cast<int>(carry));
+        result.trim();
+        return result;
     }
 };

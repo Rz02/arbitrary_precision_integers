@@ -704,6 +704,117 @@ void test_string_base_constructor()
 }
 
 /**
+ * @brief Tests the to_string(uint64_t base) member function of the bigint class.
+ *
+ * This function performs a series of tests to verify the correctness of the
+ * to_string(uint64_t base) method in the bigint class. It tests conversions
+ * to various bases, including binary, decimal, and hexadecimal, as well as
+ * handling of invalid bases. Both positive and negative numbers are tested,
+ * along with edge cases like large numbers and leading zeros.
+ *
+ */
+void test_to_string()
+{
+    try
+    {
+        std::cout << "Testing to_string() Member Function:\n";
+
+        // Test case 1: Convert positive number to string
+        bigint num1(12345);
+        if (num1.to_string(10) != "12345")
+        {
+            throw std::invalid_argument("Fail: 12345 should convert to \"12345\".");
+        }
+
+        // Test case 2: Convert zero to string
+        bigint num2(0);
+        if (num2.to_string(10) != "0")
+        {
+            throw std::invalid_argument("Fail: 0 should convert to \"0\".");
+        }
+
+        // Test case 3: Convert negative number to string
+        bigint num3(-98765);
+        if (num3.to_string(10) != "-98765")
+        {
+            throw std::invalid_argument("Fail: -98765 should convert to \"-98765\".");
+        }
+
+        // Test case 4: Large positive number
+        bigint num4(123456789123456789);
+        if (num4.to_string(10) != "123456789123456789")
+        {
+            throw std::invalid_argument("Fail: 123456789123456789 should convert to \"123456789123456789\".");
+        }
+
+        // Test case 5: Large negative number
+        bigint num5(-123456789123456789);
+        if (num5.to_string(10) != "-123456789123456789")
+        {
+            throw std::invalid_argument("Fail: -123456789123456789 should convert to \"-123456789123456789\".");
+        }
+
+        // Test case 6: Leading zeros check (internal handling)
+        bigint num6("0000123", 10);
+        if (num6.to_string(10) != "123")
+        {
+            throw std::invalid_argument("Fail: \"0000123\" should convert to \"123\".");
+        }
+
+        // Test case 7: Base-specific input (Base 36)
+        bigint num7("Z", 36); // Z in base 36 is 35
+        if (num7.to_string(36) != "Z" && num7.to_string(10) != "35")
+        {
+            throw std::invalid_argument("Fail: Z in base 36 should convert to \"35\".");
+        }
+
+        // Test case 8: Base-specific input (base 16)
+        bigint num8("1A3", 16); // 1A3 in base 16 = 419
+        if (num8.to_string(16) != "1A3" && num8.to_string(10) != "419")
+        {
+            throw std::invalid_argument("Fail: 1A3 in base 16 should convert to \"419\".");
+        }
+
+        // Test case 9: Base-specific input (base 2)
+        bigint num9("10101", 2); // 10101 in base 2 = 21
+        if (num9.to_string(2) != "10101" && num9.to_string(10) != "21")
+        {
+            throw std::invalid_argument("Fail: 10101 in base 2 should convert to \"21\".");
+        }
+
+        // Test case 10: Base 1 (Invalid)
+        try
+        {
+            bigint num10(10);
+            num10.to_string(1); // Base 1 is invalid
+            throw std::invalid_argument("Fail: Base 1 should throw an exception.");
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cout << "Caught expected exception for base 1: " << e.what() << '\n';
+        }
+
+        // Test case 11: Base greater than 36 (Invalid)
+        try
+        {
+            bigint num11(10);
+            num11.to_string(37); // Base 37 is invalid
+            throw std::invalid_argument("Fail: Base 37 should throw an exception.");
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cout << "Caught expected exception for base 37: " << e.what() << '\n';
+        }
+
+        std::cout << "Pass!\n";
+    }
+    catch (const std::invalid_argument &e)
+    {
+        std::cout << "Test failed: " << e.what() << '\n';
+    }
+}
+
+/**
  * @brief Main function to execute all tests.
  *
  * This function runs the individual test functions for the `bigint` class to
@@ -728,4 +839,5 @@ int main()
     test_division();
     test_modulus();
     test_string_base_constructor();
+    test_to_string();
 }
