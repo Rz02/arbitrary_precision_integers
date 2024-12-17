@@ -45,11 +45,11 @@ class bigint
 
 public:
     /**
-     * @brief
+     * @brief Checks if two bigint numbers are equal
      *
-     * @param rhs
-     * @return true
-     * @return false
+     * @param rhs The bigint to compare with
+     * @return true if both bigint numbers are equal
+     * @return false otherwise
      */
     bool operator==(const bigint &rhs) const
     {
@@ -57,11 +57,11 @@ public:
     }
 
     /**
-     * @brief
+     * @brief Check if two bigint numbers are not equal
      *
-     * @param rhs
-     * @return true
-     * @return false
+     * @param rhs The bigint to compare with
+     * @return true if the bigint numbers are not equal
+     * @return false otherwise
      */
     bool operator!=(const bigint &rhs) const
     {
@@ -69,32 +69,41 @@ public:
     }
 
     /**
-     * @brief
+     * @brief Compares if the current bigint is less than the given bigint
      *
-     * @param rhs
-     * @return true
-     * @return false
+     * @param rhs The bigint to compare with
+     * @return true if th current bigint is less than the given bigint
+     * @return false otherwise
      */
     bool operator<(const bigint &rhs) const
     {
+        // Check if the signs are different
+        // A negative number is always less than a positive one
         if (is_negative != rhs.is_negative)
             return is_negative;
+
+        // Compare the size of the vectors
+        // Larger size implies a larger absolute value
         if (vec.size() != rhs.vec.size())
             return is_negative ? (vec.size() > rhs.vec.size()) : (vec.size() < rhs.vec.size());
+
+        // Compare digit-by-digit starting from the most significant digit
         for (size_t i = vec.size(); i > 0; --i)
         {
             if (vec[i - 1] != rhs.vec[i - 1])
                 return is_negative ? (vec[i - 1] > rhs.vec[i - 1]) : (vec[i - 1] < rhs.vec[i - 1]);
         }
+
+        // If all digits are equal, the numbers are equal
         return false;
     }
 
     /**
-     * @brief
+     * @brief Compares if the current bigint is less than or equal to the given bigint
      *
-     * @param rhs
-     * @return true
-     * @return false
+     * @param rhs The bigint to compare with
+     * @return true if the current bigint is less than or equal to the given bigint
+     * @return false otherwise
      */
     bool operator<=(const bigint &rhs) const
     {
@@ -102,11 +111,11 @@ public:
     }
 
     /**
-     * @brief
+     * @brief Compares if the current bigint is greater than the given bigint
      *
-     * @param rhs
-     * @return true
-     * @return false
+     * @param rhs The bigint to compare with
+     * @return true if the current bigint is greater than the given bigint
+     * @return false otherwise
      */
     bool operator>(const bigint &rhs) const
     {
@@ -114,11 +123,11 @@ public:
     }
 
     /**
-     * @brief
+     * @brief Compares if the current bigint is greater than or equal to the given bigint
      *
-     * @param rhs
-     * @return true
-     * @return false
+     * @param rhs The bigint to compare with
+     * @return true if the current bigint is greater than or equal to the given bigint
+     * @return false otherwise
      */
     bool operator>=(const bigint &rhs) const
     {
@@ -126,15 +135,18 @@ public:
     }
 
     /**
-     * @brief
+     * @brief Adds two bigint numbers
      *
-     * @param rhs
-     * @return bigint
+     * @param rhs The bigint to add to the current bigint
+     * @return bigint A new one representing the sum
      */
     bigint operator+(const bigint &rhs) const
     {
+        // If the signs are the same, add the absolute values
         if (is_negative == rhs.is_negative)
             return bigint(is_negative, add_vec(vec, rhs.vec));
+
+        // If the signs differ, perform subtraction of the absolute values
         else if (abs_compare(vec, rhs.vec) >= 0)
             return bigint(is_negative, subtract_vec(vec, rhs.vec));
         else
@@ -142,15 +154,18 @@ public:
     }
 
     /**
-     * @brief
+     * @brief Subtracts the given bigint from the current bigint
      *
-     * @param rhs
-     * @return bigint
+     * @param rhs The bigint to subtract
+     * @return bigint A new one representing the difference
      */
     bigint operator-(const bigint &rhs) const
     {
+        // If the signs differ, perform addition of the absolute values
         if (is_negative != rhs.is_negative)
             return bigint(is_negative, add_vec(vec, rhs.vec));
+
+        // If the signs are the same, subtract the absolute values
         else if (abs_compare(vec, rhs.vec) >= 0)
             return bigint(is_negative, subtract_vec(vec, rhs.vec));
         else
@@ -158,14 +173,18 @@ public:
     }
 
     /**
-     * @brief
+     * @brief Multiplies two bigint numbers
      *
-     * @param rhs
-     * @return bigint
+     * @param rhs The bigint to multiply with the current bigint
+     * @return bigint A new one representing the product
      */
     bigint operator*(const bigint &rhs) const
     {
+        // Initialize a vector to hold the product
+        // It's properly sized for maximum possible digits
         std::vector<uint8_t> product(vec.size() + rhs.vec.size(), 0);
+
+        // Perform digit-by-digit multiplication
         for (size_t i = 0; i < vec.size(); ++i)
         {
             int carry = 0;
@@ -176,31 +195,38 @@ public:
                 carry = static_cast<uint8_t>(current / 10);
             }
         }
+
+        // Determine the sign of the product and return the result
         return bigint(is_negative != rhs.is_negative, product);
     }
 
     /**
-     * @brief
+     * @brief Divides the current bigint by the given bigint
      *
-     * @param rhs
-     * @return bigint
+     * @param rhs The bigint divisor
+     * @return bigint A new one representing the quotient
      */
     bigint operator/(const bigint &rhs) const
     {
+        // Handle the division by zero
         if (rhs == 0)
             throw std::invalid_argument("Division by zero");
 
+        // Make both dividend and divisor positive for calculation
         bigint dividend(*this);
         bigint divisor(rhs);
         dividend.is_negative = false;
         divisor.is_negative = false;
 
+        // If the divisor is greater than the dividend, the result is zero
         if (abs_compare(dividend.vec, divisor.vec) < 0)
             return bigint(0);
 
+        // Initialize variables for the quotient and the current value being divided
         std::vector<uint8_t> quotient;
         bigint current(0);
 
+        // Perform long division
         for (size_t i = dividend.vec.size(); i > 0; --i)
         {
             current.vec.insert(current.vec.begin(), dividend.vec[i - 1]);
@@ -214,30 +240,35 @@ public:
             }
             quotient.push_back(count);
         }
+
+        // Reverse the quotient vector and set the correct sign
         std::reverse(quotient.begin(), quotient.end());
         return bigint(is_negative != rhs.is_negative, quotient);
     }
 
     /**
-     * @brief
+     * @brief Computes the modulus of the current bigint divided by the given bigint
      *
-     * @param rhs
-     * @return bigint
+     * @param rhs The bigint divisor
+     * @return bigint A new one representing the remainder
      */
     bigint operator%(const bigint &rhs) const
     {
+        // Handle the modulus by zero
         if (rhs == 0)
             throw std::invalid_argument("Modulus by zero");
 
+        // Make both dividend and divisor positive for calculation
         bigint dividend(*this);
         bigint divisor(rhs);
-
         dividend.is_negative = false;
         divisor.is_negative = false;
 
+        // If the dividend is smaller than the divisor, return the dividend
         if (dividend < divisor)
             return *this;
 
+        // Perform modulus operation
         bigint current(0);
         for (size_t i = dividend.vec.size(); i > 0; --i)
         {
@@ -248,6 +279,7 @@ public:
                 current -= divisor;
         }
 
+        // Set the correct sign for the remainder
         current.is_negative = is_negative;
         if (current == 0)
             current.is_negative = false;
@@ -407,6 +439,7 @@ public:
         // If num is positive
         while (num > 0)
         {
+            // Convert the number to a vector of digits in reverse order
             vec.push_back(static_cast<uint8_t>(num % 10));
             num /= 10;
         }
