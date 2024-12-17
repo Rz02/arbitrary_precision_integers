@@ -74,8 +74,7 @@ Input/Output:
     - Then, iterate through the digits stored in the vector in reversed order, from the most significant to the least significant digit.
     - Finally, we return the result.
 
-## Member Functions
-### Public:
+## Member Functions (Public):
 1. Comparison:
     - `bool operator==(const bigint &rhs) const`
     - `bool operator!=(const bigint &rhs) const`
@@ -188,7 +187,8 @@ Input/Output:
         - For pre-increment, we modify the current bigint by adding/subtracting 1.
         - For post-increment, we set up a copy of the current bigint before the operation.
 
-6. Default: `bigint()`
+## Constructor
+1. Default: `bigint()`
     - Create a `bigint` initialized to `0`
     - ```
       // E.g.
@@ -198,7 +198,7 @@ Input/Output:
     - Mechanism:
         - We initialize by setting its vector as 0: `bigint() : vec({0}) {}`, where `vec` is set in *Private* section.
 
-7. Integer: `bigint(int64_t num)`
+2. Integer: `bigint(int64_t num)`
     - Initialize a `bigint` from an integer
     - ```
       // E.g.
@@ -210,7 +210,7 @@ Input/Output:
         - We also check whether it's zero or not.
         - We then convert the number to a vector of digits in reverse order by using `num % 10` for `push_back` and `num /= 10` for iterating in while loop as long as `num > 0`
 
-8. String: `bigint(const std::string &str)`
+3. String: `bigint(const std::string &str)`
     - Convert a string representation into a `bigint`
     - Supports both positive and negative values
     - Throws `std::invalid_argument` for invalid input
@@ -226,7 +226,7 @@ Input/Output:
         - If everything is alright, we use `char - '0'`, where `char` is the element of the string. This subtracts from the character to which string is pointing the ASCII code of the character '0'. So, '0' - '0' gives you 0 and so on and '9' - '0' gives you 9. (https://stackoverflow.com/questions/12927087/what-does-string-0-do-string-is-a-char) Then we use `static_cast` to convert it to `uint8_t` to fit it in the vector
         - In the end, we use the helper function `trim()` to trim leading zero.
 
-9. String with Base: `bigint(const std::string &str, int base)`
+4. String with Base: `bigint(const std::string &str, int base)`
     - Constructs a `bigint` from a string in the specified base (2 to 36)
     - Throws `std::invalid_argument` for invalid bases or characters
     - ```
@@ -240,13 +240,13 @@ Input/Output:
             - *Specifically*, an extra temporary sign parameter is set to track the status of `is_negative`, since the default setting of the bigint's sign is *positive*, which will influence the status of `is_negative`, one of the *private* variable for default setting.
         - Then, we initialize the current bigint for preventing from garbage value. Afterward, we convert the string by specifically treating three different scenarios:
             - *0 - 9*
-            - *a - z*
+            - *a - z* (In case the lowercase is offered. Technically it's equivalent to the uppercase.)
             - *A - Z*
-        Accordingly, except the first scenario, an `+ 10` is needed after `char - '0'` for correctly tracking the value based on the rules of counting.
-        - Afterward, we double check to see whether the digit is smaller than the base.
+        - Accordingly, except the first scenario, an `+ 10` is needed after `char - '0'` for correctly tracking the value based on the rules of counting.
+        - Afterward, we do double check to see whether the digit is smaller than the base.
         - In the end, we use the temporary sign parameter to confirm the bigint's sign.
 
-### Private:
+## Private:
 1. `bool is_negative = false;`
     - Indicates whether the bigint object represents a negative number.
     - Default is false, meaning the number is positive.
