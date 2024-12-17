@@ -242,7 +242,7 @@ Input/Output:
             - *0 - 9*
             - *a - z*
             - *A - Z*
-        Accordingly, except the first scenario, an `+ 10` is needed after `char - '0'` for correctly tracking the value based on the rules of counting.
+        - Accordingly, except the first scenario, an `+ 10` is needed after `char - '0'` for correctly tracking the value based on the rules of counting.
         - Afterward, we double check to see whether the digit is smaller than the base.
         - In the end, we use the temporary sign parameter to confirm the bigint's sign.
 
