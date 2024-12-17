@@ -3,7 +3,7 @@
  * @author Zicheng Zhao (zhaoz149@mcmaster.ca)
  * @brief A file that contains the class bigint
  * @version 0.1
- * @date 2024-12-04
+ * @date 2024-12-17
  *
  * @copyright Copyright (c) 2024
  *
@@ -477,6 +477,12 @@ public:
         {
             if (!std::isdigit(str[i - 1]))
                 throw std::invalid_argument("Invalid character in string!");
+            //
+            // # https://stackoverflow.com/questions/12927087/what-does-string-0-do-string-is-a-char
+            //
+            // This subtracts from the character to which string is pointing
+            // the ASCII code of the character '0'.
+            // So, '0' - '0' gives you 0 and so on and '9' - '0' gives you 9.
             vec.push_back(static_cast<uint8_t>(str[i - 1] - '0'));
         }
 
