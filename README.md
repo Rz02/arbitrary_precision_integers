@@ -73,35 +73,35 @@ Input/Output:
 ## Member Functions
 ### Public:
 1. Comparison:
-  - `bool operator==(const bigint &rhs) const`
-  - `bool operator!=(const bigint &rhs) const`
-  - `bool operator<(const bigint &rhs) const`
-  - `bool operator<=(const bigint &rhs) const`
-  - `bool operator>(const bigint &rhs) const`
-  - `bool operator>=(const bigint &rhs) const`
-  - ```
-    // E.g.
-    bigint a(123);
-    bigint b(456);
-    std::cout << (a < b); // Output: 1 (true)
-    ```
+    - `bool operator==(const bigint &rhs) const`
+    - `bool operator!=(const bigint &rhs) const`
+    - `bool operator<(const bigint &rhs) const`
+    - `bool operator<=(const bigint &rhs) const`
+    - `bool operator>(const bigint &rhs) const`
+    - `bool operator>=(const bigint &rhs) const`
+    - ```
+      // E.g.
+      bigint a(123);
+      bigint b(456);
+      std::cout << (a < b); // Output: 1 (true)
+      ```
 
 2. Arithmetic:
-  - `bigint operator+(const bigint &rhs) const`
-  - `bigint operator-(const bigint &rhs) const`
-  - `bigint operator*(const bigint &rhs) const`
-  - `bigint operator/(const bigint &rhs) const`
-  - `bigint operator%(const bigint &rhs) const`
-  - ```
-    // E.g.
-    bigint a(12345);
-    bigint b(-6789);
-    std::cout << a + b; // Output: 5556
+    - `bigint operator+(const bigint &rhs) const`
+    - `bigint operator-(const bigint &rhs) const`
+    - `bigint operator*(const bigint &rhs) const`
+    - `bigint operator/(const bigint &rhs) const`
+    - `bigint operator%(const bigint &rhs) const`
+    - ```
+      // E.g.
+      bigint a(12345);
+      bigint b(-6789);
+      std::cout << a + b; // Output: 5556
 
-    bigint c(12345);
-    bigint d(123);
-    std::cout << c / d; // Output: 100
-    ```
+      bigint c(12345);
+      bigint d(123);
+      std::cout << c / d; // Output: 100
+      ```
 
 3. Compound Assignment:
     - `bigint &operator+=(const bigint &rhs)`
