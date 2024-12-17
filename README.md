@@ -24,7 +24,7 @@ Input/Output:
 - Note:
 
     Include the header file `#include "bigint.hpp"` in the program to use the `bigint` class.
-- Constructors (*Samples are given later*):
+- Constructors:
 
     1. **Default**: Create a `bigint` with a value of `0`:
        - `bigint num;`
@@ -35,116 +35,140 @@ Input/Output:
     4. **String & Base**: Initialize a `bigint` from a string and a base by converting the string to an arbitrary-precision integer in that base:
        - `bigint num("FF", 16);`
 - Operators:
+
     - Arithmetic:
         * `+`: add two `bigint` objects
-          ```
-          bigint a(12345);
-          bigint b(-6789);
-          std::cout << a + b; // Output: 5556
-          ```
         * `-`: subtract one `bigint` from another
-          ```
-          bigint a(12345);
-          bigint b(6789);
-          std:cout << a - b; // Output: 5556
-          ```
         * `*`: multiply two `bigint` objects
-          ```
-          bigint a(123);
-          bigint b(-456);
-          std::cout << a * b // Output: -56088
-          ```
         * `/`: divide one `bigint` from another
           - uses long division to compute the quotient digit by digit
           - throws `std::invalid_argument` for division by zero
-          ```
-          bigint a(12345);
-          bigint b(123);
-          std::cout << a / b; // Output: 100
-          ```
         * `%`: return the remainder of one `bigint` divided by another
           - uses long division to compute the remainder
           - maintains the sign of the dividend in the result
           - throws `std::invalid_argument` for modulus by zero
-          ```
-          bigint a(12345);
-          bigint b(123);
-          std::cout << a % b; // Output: 45
-          ```
-    - Compound Assignment (*Samples are given later*):
+
+    - Compound Assignment:
         * `+=, -=, *=, /=, %=`: Perform arithmetic operations and update the current object.
-    - Unary (*Samples are given later*):
+
+    - Unary:
         * `-`: Negates a `bigint` value
         * `++, --`: Increment and decrement operators (both pre- and post- forms)
+
     - Comparison:
         * `==, !=, <, <=, >, >=`: Compare two `bigint` objects
-          ```
-          bigint a(123);
-          bigint b(456);
-          std::cout << (a < b); // Output: 1 (true)
-          ```
-    - `<<` outputs the value of the `bigint` object to the provided stream
-      ```
-      bigint num(12345);
-      std::cout << num; // Output: 12345
-      ```
+
+    - Insertion:
+        * `<<` outputs the value of the `bigint` object to the provided stream
+
+## Friend Function
+- Insertion:
+  * `friend std::ostream &operator<<(std::ostream &out, const bigint &num)`
+  * ```
+    // E.g.
+    bigint num(12345);
+    std::cout << num; // Output: 12345
+    ```
+
 ## Member Functions
 ### Public:
-1. Default: `bigint()`
-    - Create a `bigint` initialized to `0`
-    - ```
-      bigint num;
-      std::cout << num; // Output: 0
-      ```
-2. Integer: `bigint(int64_t num)`
-    - Initialize a `bigint` from an integer
-    - ```
-      bigint num(12345);
-      std::cout << num; // Output: 12345
-      ```
-3. String: `bigint(const std::string &str)`
-    - Convert a string representation into a `bigint`
-    - Supports both positive and negative values
-    - Throws `std::invalid_argument` for invalid input
-    - ```
-      bigint num("-987654321");
-      std::cout << num; // Output: -987654321
-      ```
-4. String with Base: `bigint(const std::string &str, int base)`
-    - Constructs a `bigint` from a string in the specified base (2 to 36)
-    - Throws `std::invalid_argument` for invalid bases or characters
-    - ```
-      bigint num("FF", 16);
-      std:cout << num; // Output: 255
-      ```
-5. Unary: `-`
-    - Negates the `bigint` value
-    - ```
-      bigint num(123);
-      std::cout << -num; // Output: -123
-      ```
-6. Pre/Post Increment/Decrement:
-    - `bigint &operator++()`: Pre-increment
-    - `bigint operator++(int)`: Post-increment
-    - `bigint &operator--()`: Pre-decrement
-    - `bigint operator--(int)`: Post-decrement
-    - ```
-      bigint num(10);
-      ++num;
-      std::cout << num; //Output: 11
-      ```
-7. Compound Assignment:
+1. Comparison:
+  - `bool operator==(const bigint &rhs) const`
+  - `bool operator!=(const bigint &rhs) const`
+  - `bool operator<(const bigint &rhs) const`
+  - `bool operator<=(const bigint &rhs) const`
+  - `bool operator>(const bigint &rhs) const`
+  - `bool operator>=(const bigint &rhs) const`
+  - ```
+    // E.g.
+    bigint a(123);
+    bigint b(456);
+    std::cout << (a < b); // Output: 1 (true)
+    ```
+
+2. Arithmetic:
+  - `bigint operator+(const bigint &rhs) const`
+  - `bigint operator-(const bigint &rhs) const`
+  - `bigint operator*(const bigint &rhs) const`
+  - `bigint operator/(const bigint &rhs) const`
+  - `bigint operator%(const bigint &rhs) const`
+  - ```
+    // E.g.
+    bigint a(12345);
+    bigint b(-6789);
+    std::cout << a + b; // Output: 5556
+
+    bigint c(12345);
+    bigint d(123);
+    std::cout << c / d; // Output: 100
+    ```
+
+3. Compound Assignment:
     - `bigint &operator+=(const bigint &rhs)`
     - `bigint &operator-=(const bigint &rhs)`
     - `bigint &operator*=(const bigint &rhs)`
     - `bigint &operator/=(const bigint &rhs)`
     - `bigint &operator%=(const bigint &rhs)`
-  
-    - E.g.
     - ```
+      // E.g.
       bigint num(10);
       num += bigint(5);
       std::cout << num; // Output: 15
+      ```
+
+4. Unary: `-`
+    - Negates the `bigint` value
+    - ```
+      // E.g.
+      bigint num(123);
+      std::cout << -num; // Output: -123
+      ```
+
+5. Pre/Post Increment/Decrement:
+    - `bigint &operator++()`: Pre-increment
+    - `bigint operator++(int)`: Post-increment
+    - `bigint &operator--()`: Pre-decrement
+    - `bigint operator--(int)`: Post-decrement
+    - ```
+      // E.g.
+      bigint num(10);
+      ++num;
+      std::cout << num; //Output: 11
+      ```
+
+6. Default: `bigint()`
+    - Create a `bigint` initialized to `0`
+    - ```
+      // E.g.
+      bigint num;
+      std::cout << num; // Output: 0
+      ```
+
+7. Integer: `bigint(int64_t num)`
+    - Initialize a `bigint` from an integer
+    - ```
+      // E.g.
+      bigint num(12345);
+      std::cout << num; // Output: 12345
+      ```
+
+8. String: `bigint(const std::string &str)`
+    - Convert a string representation into a `bigint`
+    - Supports both positive and negative values
+    - Throws `std::invalid_argument` for invalid input
+    - ```
+      // E.g.
+      bigint num("-987654321");
+      std::cout << num; // Output: -987654321
+      ```
+
+9. String with Base: `bigint(const std::string &str, int base)`
+    - Constructs a `bigint` from a string in the specified base (2 to 36)
+    - Throws `std::invalid_argument` for invalid bases or characters
+    - ```
+      // E.g.
+      bigint num("FF", 16);
+      std:cout << num; // Output: 255
       ```
 
 ### Private:
