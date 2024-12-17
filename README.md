@@ -240,10 +240,10 @@ Input/Output:
             - *Specifically*, an extra temporary sign parameter is set to track the status of `is_negative`, since the default setting of the bigint's sign is *positive*, which will influence the status of `is_negative`, one of the *private* variable for default setting.
         - Then, we initialize the current bigint for preventing from garbage value. Afterward, we convert the string by specifically treating three different scenarios:
             - *0 - 9*
-            - *a - z*
+            - *a - z* (In case the lowercase is offered. Technically it's equivalent to the uppercase.)
             - *A - Z*
         - Accordingly, except the first scenario, an `+ 10` is needed after `char - '0'` for correctly tracking the value based on the rules of counting.
-        - Afterward, we double check to see whether the digit is smaller than the base.
+        - Afterward, we do double check to see whether the digit is smaller than the base.
         - In the end, we use the temporary sign parameter to confirm the bigint's sign.
 
 ## Private:
