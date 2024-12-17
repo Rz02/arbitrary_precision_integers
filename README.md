@@ -50,10 +50,10 @@ Input/Output:
 
     - Compound Assignment:
         * `+=, -=, *=, /=, %=`: Perform arithmetic operations and update the current object.
+        * `++, --`: Increment and decrement operators (both pre- and post- forms)
 
     - Unary:
         * `-`: Negates a `bigint` value
-        * `++, --`: Increment and decrement operators (both pre- and post- forms)
 
     - Comparison:
         * `==, !=, <, <=, >, >=`: Compare two `bigint` objects
