@@ -3,7 +3,7 @@
  * @author Zicheng Zhao (zhaoz149@mcmaster.com)
  * @brief
  * @version 0.1
- * @date 2024-12-05
+ * @date 2024-12-17
  *
  * @copyright Copyright (c) 2024
  *
@@ -383,6 +383,89 @@ void test_increment_decrement_operators()
 }
 
 /**
+ * @brief Test the addition operator for the `bigint` class.
+ *
+ * This function verifies the correctness of addition with edge cases,
+ * including positive numbers, negative numbers, zero, and large numbers.
+ *
+ */
+void test_addition()
+{
+    std::cout << "Testing Addition: \n";
+
+    bigint a(100);
+    bigint b(-50);
+    bigint c(0);
+    bigint d("123456789123456789");
+    bigint e("876543210876543210");
+
+    if (!(a + b == 50))
+        throw std::invalid_argument("Fail: Positive + Negative.");
+    if (!(a + c == 100))
+        throw std::invalid_argument("Fail: Addition with zero.");
+    if (!(d + e == bigint("999999999999999999")))
+        throw std::invalid_argument("Fail: Addition with large numbers.");
+
+    std::cout << "Pass.\n";
+}
+
+/**
+ * @brief Test the subtraction operator for the `bigint` class.
+ *
+ * This function verifies the correctness of subtraction with edge cases,
+ * including positive numbers, negative numbers, zero, and results that are negative.
+ *
+ */
+void test_subtraction()
+{
+    std::cout << "Testing Subtraction: \n";
+
+    bigint a(100);
+    bigint b(-50);
+    bigint c(0);
+    bigint d("123456789123456789");
+    bigint e("123456789123456788");
+
+    if (!(a - b == 150))
+        throw std::invalid_argument("Fail: Positive - Negative.");
+    if (!(a - c == 100))
+        throw std::invalid_argument("Fail: Subtraction with zero.");
+    if (!(e - d == -1))
+        throw std::invalid_argument("Fail: Subtraction resulting in negative.");
+
+    std::cout << "Pass.\n";
+}
+
+/**
+ * @brief Test the multiplication operator for the `bigint` class.
+ *
+ * This function verifies the correctness of multiplication with edge cases,
+ * including positive numbers, negative numbers, zero, and large numbers.
+ *
+ */
+void test_multiplication()
+{
+    std::cout << "Testing Multiplication: \n";
+
+    bigint a(10);
+    bigint b(-5);
+    bigint c(0);
+    bigint d("123456789");
+    bigint e("987654321");
+
+    if (!(a * b == -50))
+        throw std::invalid_argument("Fail: Positive * Negative.");
+    if (!(a * c == 0))
+        throw std::invalid_argument("Fail: Multiplication by zero.");
+    if (!(b * b == 25))
+        throw std::invalid_argument("Fail: Negative * Negative.");
+    if (!(d * e == bigint("121932631112635269")))
+        throw std::invalid_argument("Fail: Multiplication of large numbers.");
+
+    std::cout << "Pass.\n";
+}
+
+/**
  * @brief Tests the division operator for the `bigint` class.
  *
  * This test validates the correctness of the division operator (`/`) for various
@@ -639,6 +722,9 @@ int main()
     test_compound_assignment_operators();
     test_unary_negation();
     test_increment_decrement_operators();
+    test_addition();
+    test_subtraction();
+    test_multiplication();
     test_division();
     test_modulus();
     test_string_base_constructor();
