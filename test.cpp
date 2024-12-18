@@ -1,9 +1,9 @@
 /**
  * @file test.cpp
  * @author Zicheng Zhao (zhaoz149@mcmaster.com)
- * @brief
+ * @brief A test file for the bigint class
  * @version 0.1
- * @date 2024-12-17
+ * @date 2024-12-18
  *
  * @copyright Copyright (c) 2024
  *
