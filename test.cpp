@@ -83,24 +83,25 @@ void test_string_constructor()
 {
     try
     {
+        std::cout << "Testing string constructor: \n";
         // Test valid positive number
         bigint num1("12345");
         std::cout << "num1 (Expected: 12345): " << num1 << '\n';
         if (num1 != 12345)
-            throw std::invalid_argument("Fail.");
+            throw std::invalid_argument("Fail, Positive String Number.");
 
         // Test valid negative number
         bigint num2("-9876");
         std::cout << "num2 (Expected: -9876): " << num2 << '\n';
         if (num2 != -9876)
-            throw std::invalid_argument("Fail.");
+            throw std::invalid_argument("Fail, Negative String Number.");
 
         // Test invalid empty string
         std::string input = "";
         try
         {
             bigint num3(input);
-            throw std::invalid_argument("Fail.");
+            throw std::invalid_argument("Fail, Empty String.");
         }
         catch (const std::invalid_argument &e)
         {
@@ -112,7 +113,7 @@ void test_string_constructor()
         try
         {
             bigint num4(input);
-            throw std::invalid_argument("Fail.");
+            throw std::invalid_argument("Fail, Invalid String.");
         }
         catch (const std::invalid_argument &e)
         {
@@ -124,7 +125,7 @@ void test_string_constructor()
         try
         {
             bigint num5(input);
-            throw std::invalid_argument("Fail.");
+            throw std::invalid_argument("Fail, Invalid String.");
         }
         catch (const std::invalid_argument &e)
         {
@@ -136,7 +137,7 @@ void test_string_constructor()
         try
         {
             bigint num6(input);
-            throw std::invalid_argument("Fail.");
+            throw std::invalid_argument("Fail, Invalid String.");
         }
         catch (const std::invalid_argument &e)
         {
@@ -165,7 +166,7 @@ void test_string_constructor()
         if (!(num0 == 0))
             throw std::invalid_argument("Fail. Negative Zero");
 
-        std::cout << "Testing string constructor: Pass.\n";
+        std::cout << "Pass.\n";
     }
     catch (const std::invalid_argument &e)
     {

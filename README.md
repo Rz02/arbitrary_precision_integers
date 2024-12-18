@@ -200,6 +200,7 @@ Input/Output:
        - We then check the scenario when the bigint represents zero.
        - Then we create a copy of the current bigint to avoid modifying the original object, and temporarily ignore the sign (set as positive).
        - We initialize a variable `result` to store the base-converted digits, and a string `digits` contains characters to handle bases up to 36.
+            - For `digits`, a *pointer* expression seems to work too. However, we'll keep using *reference* for aligning with the requirement, meanwhile ensure that we won't accidentally assign a new address to `digits`.
        - Then, we use a helper function `divide_by_base`, which will be explained later, to repeatedly divide the bigint by the base and extract the remainder at each step, where the remainder corresponds to the next digit in the base representation and is added to `result`.
        - We reverse the result since we obtain the digits in reverse order. And we also add back the original sign. Now we obtain the result string.
 

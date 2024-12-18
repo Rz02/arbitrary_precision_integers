@@ -3,7 +3,7 @@
  * @author Zicheng Zhao (zhaoz149@mcmaster.ca)
  * @brief A file that contains the class bigint
  * @version 0.1
- * @date 2024-12-17
+ * @date 2024-12-18
  *
  * @copyright Copyright (c) 2024
  *
@@ -72,7 +72,7 @@ public:
      * @brief Compares if the current bigint is less than the given bigint
      *
      * @param rhs The bigint to compare with
-     * @return true if th current bigint is less than the given bigint
+     * @return true if the current bigint is less than the given bigint
      * @return false otherwise
      */
     bool operator<(const bigint &rhs) const
@@ -434,7 +434,10 @@ public:
         std::string result;
 
         // Characters used for digits in bases up to 36
-        const char *digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        // Pointer seems to work here too:
+        // const char *digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        // However, for avoiding using pointer, we'll use reference instead:
+        constexpr const char(&digits)[37] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         // Convert the number to the desired base
         // Until the number becomes zero
@@ -594,6 +597,7 @@ public:
             int digit = 0;
 
             // Determine the digit value based on the character
+            // ASCII
             if ('0' <= c && c <= '9')
             {
                 digit = c - '0';
