@@ -181,11 +181,28 @@ Input/Output:
       // E.g.
       bigint num(10);
       ++num;
-      std::cout << num; //Output: 11
+      std::cout << num; // Output: 11
       ```
     - Mechanism:
         - For pre-increment, we modify the current bigint by adding/subtracting 1.
         - For post-increment, we set up a copy of the current bigint before the operation.
+
+6. Bigint to String:
+   - `std::string to_string(uint64_t base) const`
+   - Convert a `bigint` object into its string representation in a specified base
+   - ```
+     E.g.
+     bigint num(255);
+     std:cout << num.to_string(16); // Output: "FF"
+     ```
+   - Mechanism:
+       - We firstly check whether the base is in a reasonable interval.
+       - We then check the scenario when the bigint represents zero.
+       - Then we create a copy of the current bigint to avoid modifying the original object, and temporarily ignore the sign (set as positive).
+       - We initialize a variable `result` to store the base-converted digits, and a string `digits` contains characters to handle bases up to 36.
+       - Then, we use a helper function `divide_by_base`, which will be explained later, to repeatedly divide the bigint by the base and extract the remainder at each step, where the remainder corresponds to the next digit in the base representation and is added to `result`.
+       - We reverse the result since we obtain the digits in reverse order. And we also add back the original sign. Now we obtain the result string.
+
 
 ## Constructor
 1. Default: `bigint()`
@@ -278,7 +295,9 @@ Input/Output:
         - We firstly initialize a vector for storing the result. We also set up a borrow variable for handling borrow propagation.
         - We select the size of the minuend vector as the max times of iteration.
         - Inside the loop, the parameter diff starts with the subtraction between the corresponding element and the borrow variable, similar to how do we handle manual calculation in subtraction.
-        - Additionally, there might be extra zero that need to be trimmed. A function using `pop_back()` is explicitly set for double check. 
+        - Additionally, there might be extra zero that need to be trimmed. A function using `pop_back()` is explicitly set for double check.
+
+
 7. `abs_compare(const std::vector<uint8_t> &a, const std::vector<uint8_t> &b)`:
     - Compare two vectors.
     - Mechanism:
@@ -286,3 +305,14 @@ Input/Output:
             - 1 if |a| > |b|
             - -1 if |a| < |b|
             - 0 if |a| == |b|
+
+8. `bigint divide_by_base(uint64_t base, bigint &remainder) const`:
+   - Perform the division of a bigint object by a given base and calculate both the quotient and the remainder.
+   - Mechanism:
+       - We create a new bigint object to store the quotient. We resize it to match the size of the current bigint.
+       - We create a *carry* variable to hold the accumulated carry-over value during the division process.
+       - By starting from the most significant digit, we process each digit of the object. Meanwhile:
+             - We update the carry variable by `carry  =carry * 10 + vec[i - 1]`
+             - We compute the quotient digit by `result.vec[i - 1] = carry / base`
+             - We update the carry by `carry %= base`
+       - After processing all digits, we obtain the *carry* variable containing the remainder of the division, and a newly created `bigint`, the quotient of the division as a bigint, which is trimmed to ensure that it remains compact.
