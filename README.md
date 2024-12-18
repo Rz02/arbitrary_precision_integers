@@ -312,7 +312,21 @@ Input/Output:
        - We create a new bigint object to store the quotient. We resize it to match the size of the current bigint.
        - We create a *carry* variable to hold the accumulated carry-over value during the division process.
        - By starting from the most significant digit, we process each digit of the object. Meanwhile:
-           - We update the carry variable by `carry  =carry * 10 + vec[i - 1]`
+           - We update the carry variable by `carry = carry * 10 + vec[i - 1]`
            - We compute the quotient digit by `result.vec[i - 1] = carry / base`
            - We update the carry by `carry %= base`
        - After processing all digits, we obtain the *carry* variable containing the remainder of the division, and a newly created `bigint`, the quotient of the division as a bigint, which is trimmed to ensure that it remains compact.
+   - Example:
+       - Convert `bigint` value `255` to a string in base `16`:
+           1. First call to `divide_by_base(16, bigint(0)) // bigint(0) as initialization`
+               - Input: 255
+               - Quotient: 15
+               - Remainder: 15
+               - Add "F" to the result (digit for 15 in base 16)
+           2. Second cal to `divide_by_base(16, bigint(15)) // from the previous step`
+               - Input: 15
+               - Quotient: 0
+               - Remainder: 15
+               - Add "F" to the result (digit for 15 in base 16)
+           3. Finish conversion:
+               - Reverse the result: **"FF"** 
