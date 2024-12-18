@@ -323,7 +323,7 @@ Input/Output:
                - Quotient: 15
                - Remainder: 15
                - Add "F" to the result (digit for 15 in base 16)
-           2. Second cal to `divide_by_base(16, bigint(15)) // from the previous step`
+           2. Second call to `divide_by_base(16, bigint(15)) // from the previous step`
                - Input: 15
                - Quotient: 0
                - Remainder: 15
